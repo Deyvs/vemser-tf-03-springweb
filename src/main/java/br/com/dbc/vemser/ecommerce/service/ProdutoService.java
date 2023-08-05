@@ -1,9 +1,16 @@
 package br.com.dbc.vemser.ecommerce.service;
 
+import br.com.dbc.vemser.ecommerce.repository.ProdutoRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class ProdutoService {
+
+    private ProdutoRepository produtoRepository;
+
+
 }
 
 //    private ProdutoRepository produtoRepository;
