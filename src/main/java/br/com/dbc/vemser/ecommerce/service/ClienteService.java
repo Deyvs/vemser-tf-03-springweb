@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,12 +19,31 @@ public class ClienteService {
 
     private final ObjectMapper objectMapper;
 
-    public List<Cliente> list() throws Exception {
-        return clienteRepository.list();
+    public List<ClienteDTO> list() throws Exception {
+        List<Cliente> clientes = clienteRepository.list();
+        List<ClienteDTO> clienteDTOS = new ArrayList<>();
+
+        for(Cliente cliente : clientes) {
+            ClienteDTO clienteDTO = new ClienteDTO();
+            clienteDTO.setIdCliente(cliente.getIdCliente());
+            clienteDTO.setNome(cliente.getNome());
+            clienteDTO.setTelefone(cliente.getTelefone());
+            clienteDTO.setEmail(cliente.getEmail());
+            clienteDTO.setCpf(cliente.getCpf());
+            clienteDTOS.add(clienteDTO);
+        }
+        return clienteDTOS;
     }
 
-    public Cliente getClienteById(Integer idCliente) throws Exception {
-        return clienteRepository.getClienteById(idCliente);
+    public ClienteDTO getClienteById(Integer idCliente) throws Exception {
+        Cliente cliente = clienteRepository.getClienteById(idCliente);
+        ClienteDTO clienteDTO = new ClienteDTO();
+        clienteDTO.setIdCliente(cliente.getIdCliente());
+        clienteDTO.setNome(cliente.getNome());
+        clienteDTO.setTelefone(cliente.getTelefone());
+        clienteDTO.setEmail(cliente.getEmail());
+        clienteDTO.setCpf(cliente.getCpf());
+        return clienteDTO;
     }
 
     public ClienteDTO create(ClienteCreateDTO cliente) throws Exception {
