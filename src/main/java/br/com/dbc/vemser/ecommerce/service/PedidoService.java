@@ -1,9 +1,41 @@
 package br.com.dbc.vemser.ecommerce.service;
 
+import br.com.dbc.vemser.ecommerce.dto.PedidoCreateDTO;
+import br.com.dbc.vemser.ecommerce.dto.PedidoOutputDTO;
+import br.com.dbc.vemser.ecommerce.entity.Pedido;
+import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class PedidoService {
+
+    private final PedidoRepository pedidoRepository;
+    private final ObjectMapper objectMapper;
+
+//    public Pedido adicionar(Integer idCliente,PedidoCreateDTO pedido) throws Exception {
+//
+//        //metodo para buscar produto;
+//        //metodo para buscar cliente
+//
+//
+//        Integer quantidade = pedido.getQuantidade();
+//
+//        Pedido pedidoConvert = objectMapper.convertValue(pedido, Pedido.class);
+//
+//        pedidoConvert.setIdCliente(idCliente);
+//
+//        Pedido pedidoReturnDB = pedidoRepository.adicionar(pedidoConvert);
+//
+//        PedidoOutputDTO pedidoOutputDTO = new PedidoOutputDTO(pedidoReturnDB.getIdPedido(),pedidoReturnDB.getIdCliente(),pedidoReturnDB.getIdProduto(),pedidoReturnDB.get);
+//
+//
+//
+//        return  null;
+//    }
 
 }
 
