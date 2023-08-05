@@ -25,7 +25,7 @@ public class ProdutoInputDTO {
     @NotNull
     @NotBlank
     private String setor;
+
     @NotNull
-    @NotBlank
     private Double valor;
 }

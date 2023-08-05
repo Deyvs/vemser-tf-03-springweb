@@ -64,6 +64,14 @@ public class ProdutoService {
     }
 
 
+    public ProdutoDTO salvar(ProdutoInputDTO produtoInputDTO) throws BancoDeDadosException {
+
+        Produto produto = converteDTOparaProduto(produtoInputDTO);
+
+        Produto produtoBuscado = produtoRepository.criarProduto(produto);
+
+        return converteProdutoParaDTO(produtoBuscado);
+    }
 }
 
 //    private ProdutoRepository produtoRepository;
