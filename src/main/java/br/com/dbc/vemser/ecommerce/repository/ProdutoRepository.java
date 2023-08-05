@@ -38,7 +38,7 @@ public class ProdutoRepository {
 
             StringBuilder sql = new StringBuilder();
             sql.append("INSERT INTO PRODUTO ");
-            sql.append("ID_PRODUTO, MODELO, TAMANHO, COR, SETOR, VALOR ");
+            sql.append("(ID_PRODUTO, MODELO, TAMANHO, COR, SETOR, VALOR) ");
             sql.append("VALUES");
             sql.append("(?, ?, ?, ?, ?, ?)");
 
