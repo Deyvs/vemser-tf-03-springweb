@@ -23,5 +23,6 @@ public class PedidoOutputDTO{
 
     private Double valor;
 
+    private String statusPedido;
 
 }
