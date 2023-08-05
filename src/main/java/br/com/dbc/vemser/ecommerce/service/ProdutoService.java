@@ -4,6 +4,7 @@ import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoInputDTO;
 import br.com.dbc.vemser.ecommerce.entity.Produto;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.repository.ProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -28,9 +29,13 @@ public class ProdutoService {
                 .collect(Collectors.toList());
     }
 
-    public ProdutoDTO buscarProduto(Integer idProduto) throws BancoDeDadosException {
+    public ProdutoDTO buscarProduto(Integer idProduto) throws BancoDeDadosException, ProdutoNaoEncontradoException {
 
         Produto produto = produtoRepository.buscarProduto(idProduto);
+
+        if (produto == null) {
+            throw new ProdutoNaoEncontradoException("Produto não cadastrado.");
+        }
 
         return converteProdutoParaDTO(produto);
 
