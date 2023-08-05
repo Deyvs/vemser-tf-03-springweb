@@ -21,13 +21,13 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> List() throws Exception {
-        return new ResponseEntity<>(clienteService.list(), HttpStatus.OK);
+    public ResponseEntity<List<ClienteDTO>> List() throws Exception {
+        return new ResponseEntity<List<ClienteDTO>>(clienteService.list(), HttpStatus.OK);
     }
 
     @GetMapping("/{idCliente}")
-    public ResponseEntity<Cliente> getClienteById(@PathVariable Integer idCliente) throws Exception {
-        return new ResponseEntity<>(clienteService.getClienteById(idCliente), HttpStatus.OK);
+    public ResponseEntity<ClienteDTO> getClienteById(@PathVariable Integer idCliente) throws Exception {
+        return new ResponseEntity<ClienteDTO>(clienteService.getClienteById(idCliente), HttpStatus.OK);
     }
 
     @PostMapping
