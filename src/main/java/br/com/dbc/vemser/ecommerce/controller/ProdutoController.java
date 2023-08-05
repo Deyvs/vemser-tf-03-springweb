@@ -3,6 +3,7 @@ package br.com.dbc.vemser.ecommerce.controller;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoInputDTO;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.service.ProdutoService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,7 @@ public class ProdutoController {
     @GetMapping("/{idProduto}")
     public ResponseEntity<ProdutoDTO> buscarProduto(
             @Positive(message = "O número precisa ser positivo.")
-            @PathVariable Integer idProduto) throws BancoDeDadosException {
+            @PathVariable Integer idProduto) throws BancoDeDadosException, ProdutoNaoEncontradoException {
 //        log.info("buscar produtos");
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto);
         return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
