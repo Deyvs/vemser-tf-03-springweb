@@ -19,8 +19,6 @@ public class PedidoOutputDTO{
 
     private Integer idCliente;
 
-    private Integer idProduto;
-
     private Double valor;
 
     private String statusPedido;
