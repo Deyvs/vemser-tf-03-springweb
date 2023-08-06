@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.ecommerce.repository;
 
 import br.com.dbc.vemser.ecommerce.db.ConexaoBancoDeDados;
+import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoInputDTO;
 import br.com.dbc.vemser.ecommerce.entity.Produto;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import org.springframework.stereotype.Repository;
@@ -141,6 +142,10 @@ public class ProdutoRepository {
         return produto;
     }
 
+//    public void atualizar(ProdutoInputDTO produtoInputDTO) {
+//
+//
+//    }
 }
 
 //    public Integer getProximoId(Connection connection) throws BancoDeDadosException {
