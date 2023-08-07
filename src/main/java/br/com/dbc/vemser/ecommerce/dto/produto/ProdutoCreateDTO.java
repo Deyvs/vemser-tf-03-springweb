@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProdutoInputDTO {
+public class ProdutoCreateDTO {
 
     @NotNull
     @NotBlank

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProdutoDTO extends ProdutoInputDTO {
+public class ProdutoDTO extends ProdutoCreateDTO {
 
     private Integer idProduto;
 }
