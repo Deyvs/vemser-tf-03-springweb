@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.ecommerce.utilitarias;
 
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoInputDTO;
+import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoCreateDTO;
 import br.com.dbc.vemser.ecommerce.entity.Produto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -32,14 +32,14 @@ public class ConverterProdutoParaDTOutil {
         return produtoUpdateDTO;
     }
 
-    public Produto converteDTOparaProduto(ProdutoInputDTO produtoInputDTO) {
-        Produto produtoConvertido = objectMapper.convertValue(produtoInputDTO, Produto.class);
+    public Produto converteDTOparaProduto(ProdutoCreateDTO produtoCreateDTO) {
+        Produto produtoConvertido = objectMapper.convertValue(produtoCreateDTO, Produto.class);
 
-        produtoConvertido.setCor(produtoInputDTO.getCor());
-        produtoConvertido.setModelo(produtoInputDTO.getModelo());
-        produtoConvertido.setTamanho(produtoInputDTO.getTamanho());
-        produtoConvertido.setSetor(produtoInputDTO.getSetor());
-        produtoConvertido.setValor(produtoInputDTO.getValor());
+        produtoConvertido.setCor(produtoCreateDTO.getCor());
+        produtoConvertido.setModelo(produtoCreateDTO.getModelo());
+        produtoConvertido.setTamanho(produtoCreateDTO.getTamanho());
+        produtoConvertido.setSetor(produtoCreateDTO.getSetor());
+        produtoConvertido.setValor(produtoCreateDTO.getValor());
 
         return produtoConvertido;
     }

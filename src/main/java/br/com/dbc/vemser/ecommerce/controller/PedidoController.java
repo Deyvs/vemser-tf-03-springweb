@@ -1,6 +1,6 @@
 package br.com.dbc.vemser.ecommerce.controller;
 
-import br.com.dbc.vemser.ecommerce.dto.PedidoOutputDTO;
+import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoOutputDTO;
 import br.com.dbc.vemser.ecommerce.service.PedidoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
