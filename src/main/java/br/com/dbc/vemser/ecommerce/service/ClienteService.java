@@ -24,69 +24,53 @@ public class ClienteService {
         List<ClienteDTO> clienteDTOS = new ArrayList<>();
 
         for(Cliente cliente : clientes) {
-            ClienteDTO clienteDTO = new ClienteDTO();
-            clienteDTO.setIdCliente(cliente.getIdCliente());
-            clienteDTO.setNome(cliente.getNome());
-            clienteDTO.setTelefone(cliente.getTelefone());
-            clienteDTO.setEmail(cliente.getEmail());
-            clienteDTO.setCpf(cliente.getCpf());
-            clienteDTOS.add(clienteDTO);
+            clienteDTOS.add(converterByClienteDTO(cliente));
         }
+
         return clienteDTOS;
     }
 
     public ClienteDTO getClienteById(Integer idCliente) throws Exception {
         Cliente cliente = clienteRepository.getClienteById(idCliente);
+        return converterByClienteDTO(cliente);
+    }
+
+    public ClienteDTO create(ClienteCreateDTO clienteCreateDTO) throws Exception {
+        Cliente entity = converterByCliente(clienteCreateDTO);
+        Cliente cliente = clienteRepository.create(entity);
+
+        return converterByClienteDTO(cliente);
+    }
+
+    public ClienteDTO update(Integer idCliente, ClienteCreateDTO clienteCreateDTO) throws Exception{
+        Cliente entity = converterByCliente(clienteCreateDTO);
+        Cliente cliente = clienteRepository.update(idCliente, entity);
+
+        return converterByClienteDTO(cliente);
+    }
+
+    public void delete(Integer idCliente) throws Exception {
+        clienteRepository.delete(idCliente);
+    }
+
+    public ClienteDTO converterByClienteDTO(Cliente cliente) {
         ClienteDTO clienteDTO = new ClienteDTO();
         clienteDTO.setIdCliente(cliente.getIdCliente());
         clienteDTO.setNome(cliente.getNome());
         clienteDTO.setTelefone(cliente.getTelefone());
         clienteDTO.setEmail(cliente.getEmail());
         clienteDTO.setCpf(cliente.getCpf());
-        return clienteDTO;
-    }
-
-    public ClienteDTO create(ClienteCreateDTO cliente) throws Exception {
-//        System.out.println(cliente);
-        Cliente entity = objectMapper.convertValue(cliente, Cliente.class);
-        entity.setNome(cliente.getNome());
-        entity.setTelefone(cliente.getTelefone());
-        entity.setEmail(cliente.getEmail());
-        entity.setCpf(cliente.getCpf());
-
-        Cliente clienteCreated = clienteRepository.create(entity);
-
-        ClienteDTO clienteDTO = new ClienteDTO();
-        clienteDTO.setIdCliente(clienteCreated.getIdCliente());
-        clienteDTO.setNome(clienteCreated.getNome());
-        clienteDTO.setTelefone(clienteCreated.getTelefone());
-        clienteDTO.setEmail(clienteCreated.getEmail());
-        clienteDTO.setCpf(clienteCreated.getCpf());
-        return clienteDTO;
-    }
-
-    public ClienteDTO update(Integer idCliente, ClienteCreateDTO cliente) throws Exception{
-
-        Cliente entity = objectMapper.convertValue(cliente, Cliente.class);
-        entity.setNome(cliente.getNome());
-        entity.setTelefone(cliente.getTelefone());
-        entity.setEmail(cliente.getEmail());
-        entity.setCpf(cliente.getCpf());
-
-        Cliente clienteCreated = clienteRepository.update(idCliente, entity);
-
-        ClienteDTO clienteDTO = new ClienteDTO();
-        clienteDTO.setIdCliente(clienteCreated.getIdCliente());
-        clienteDTO.setNome(clienteCreated.getNome());
-        clienteDTO.setTelefone(clienteCreated.getTelefone());
-        clienteDTO.setEmail(clienteCreated.getEmail());
-        clienteDTO.setCpf(clienteCreated.getCpf());
 
         return clienteDTO;
     }
 
+    public Cliente converterByCliente(ClienteCreateDTO clienteCreateDTO) {
+        Cliente entity = objectMapper.convertValue(clienteCreateDTO, Cliente.class);
+        entity.setNome(clienteCreateDTO.getNome());
+        entity.setTelefone(clienteCreateDTO.getTelefone());
+        entity.setEmail(clienteCreateDTO.getEmail());
+        entity.setCpf(clienteCreateDTO.getCpf());
 
-    public void delete(Integer idCliente) throws Exception {
-        clienteRepository.delete(idCliente);
+        return entity;
     }
 }
