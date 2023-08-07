@@ -1,9 +1,73 @@
 package br.com.dbc.vemser.ecommerce.service;
 
+import br.com.dbc.vemser.ecommerce.dto.PedidoCreateDTO;
+import br.com.dbc.vemser.ecommerce.dto.PedidoOutputDTO;
+import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
+import br.com.dbc.vemser.ecommerce.entity.Pedido;
+import br.com.dbc.vemser.ecommerce.entity.Produto;
+import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
+@AllArgsConstructor
 public class PedidoService {
+
+    private final PedidoRepository pedidoRepository;
+    private final ProdutoService produtoService;
+    private final ObjectMapper objectMapper;
+
+    public PedidoOutputDTO adicionar(Integer idCliente) throws Exception {
+        PedidoOutputDTO pedidoOutputDTO = null;
+        try {
+            Pedido pedido = pedidoRepository.adicionar(new Pedido(null, idCliente, 0.0, "N"));
+            pedidoOutputDTO = objectMapper.convertValue(pedido,PedidoOutputDTO.class);
+            return  pedidoOutputDTO;
+        }catch (SQLException e){
+          e.printStackTrace();
+        }
+        return pedidoOutputDTO;
+    }
+
+    public List<PedidoOutputDTO> listar() throws Exception{
+        List<PedidoOutputDTO>listaOut = new ArrayList<>();
+
+        for(Pedido p: pedidoRepository.listar()){
+            listaOut.add(objectMapper.convertValue(p,PedidoOutputDTO.class));
+        }
+        return listaOut;
+    }
+
+//    public PedidoOutputDTO atualizarValorPedido(Integer idPedido,Integer idProduto) throws Exception{
+//
+//        PedidoOutputDTO pedidoOutputDTO = null;
+//
+//        Produto produtoAchado = objectMapper.convertValue(produtoService.buscarProduto(idProduto), Produto.class);
+//        Pedido pedidoAchado = pedidoRepository.getPedidoPorId(idPedido);
+//
+//        if(pedidoAchado != null  && produtoAchado != null){
+//
+//            pedidoAchado.setValor(pedidoAchado.getValor()+produtoAchado.getValor());
+//
+//            if(pedidoRepository.editarValorDoPedido(pedidoAchado)){
+//
+//                return pedidoOutputDTO = objectMapper.convertValue(pedidoAchado,PedidoOutputDTO.class);
+//            }
+//        }
+//
+//        return pedidoOutputDTO;
+//    }
+
+
+    public void deletePedido(Integer idPedido) throws Exception{
+        pedidoRepository.remover(idPedido);
+    }
 
 }
 

@@ -4,13 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pedido {
     private Integer idPedido;
     private Integer idCliente;
-    private Integer idProduto;
     private Double valor;
     private String statusPedido;
 }
