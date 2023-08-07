@@ -52,18 +52,18 @@ public class ProdutoController {
         return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
     }
 
-//    @PutMapping("/{idProduto}")
-//    public ResponseEntity<ProdutoDTO> atualizarProduto(
-//            @Positive(message = "O número precisa ser positivo.")
-//            @PathVariable Integer idProduto,
-//            @Valid @RequestBody
-//            ProdutoInputDTO produtoInputDTO) throws BancoDeDadosException {
-////        log.info("buscar produtos");
-//
-//        ProdutoDTO produtoDTO = produtoService.atualizar(produtoInputDTO);
-//
-//        return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
-//    }
+    @PutMapping("/{idProduto}")
+    public ResponseEntity<ProdutoDTO> atualizarProduto(
+            @Positive(message = "O número precisa ser positivo.")
+            @PathVariable Integer idProduto,
+            @Valid @RequestBody
+            ProdutoInputDTO produtoInputDTO) throws BancoDeDadosException, ProdutoNaoEncontradoException {
+//        log.info("buscar produtos");
+
+        ProdutoDTO produtoDTO = produtoService.atualizar(idProduto, produtoInputDTO);
+
+        return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
+    }
 
 
 }

@@ -6,6 +6,7 @@ import br.com.dbc.vemser.ecommerce.entity.Produto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConverterProdutoParaDTOutil {
 
+    @Autowired
     private ObjectMapper objectMapper;
 
     public ProdutoDTO converteProdutoParaDTO(Produto produtoUpdate) {

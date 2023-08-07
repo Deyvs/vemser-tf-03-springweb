@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.ecommerce.repository;
 
 import br.com.dbc.vemser.ecommerce.db.ConexaoBancoDeDados;
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoInputDTO;
 import br.com.dbc.vemser.ecommerce.entity.Produto;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import org.springframework.stereotype.Repository;
@@ -142,10 +141,56 @@ public class ProdutoRepository {
         return produto;
     }
 
-//    public void atualizar(ProdutoInputDTO produtoInputDTO) {
-//
-//
-//    }
+    public Produto atualizar(Integer idProduto, Produto produto) throws BancoDeDadosException {
+
+        Connection con = null;
+
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            StringBuilder sql = new StringBuilder();
+
+            sql.append("UPDATE PRODUTO SET");
+            sql.append(" MODELO = ?,");
+            sql.append(" TAMANHO = ?,");
+            sql.append(" COR = ?,");
+            sql.append(" SETOR = ?,");
+            sql.append(" VALOR = ?");
+            sql.append(" WHERE ID_PRODUTO = ?");
+
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
+
+            stmt.setString(1, produto.getModelo());
+            stmt.setString(2, produto.getTamanho());
+            stmt.setString(3, produto.getCor());
+            stmt.setString(4, produto.getSetor());
+            stmt.setDouble(5, produto.getValor());
+            stmt.setInt(6, idProduto);
+
+            // Executa-se a consulta
+            stmt.executeUpdate();
+
+            produto.setIdProduto(idProduto);
+
+            return produto;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
 }
 
 //    public Integer getProximoId(Connection connection) throws BancoDeDadosException {
