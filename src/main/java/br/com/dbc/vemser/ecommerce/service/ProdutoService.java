@@ -6,9 +6,9 @@ import br.com.dbc.vemser.ecommerce.entity.Produto;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.repository.ProdutoRepository;
+import br.com.dbc.vemser.ecommerce.utilitarias.ConverterProdutoParaDTOutil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +16,13 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class ProdutoService {
 
     private ProdutoRepository produtoRepository;
 
     private ObjectMapper objectMapper;
+
+    private ConverterProdutoParaDTOutil converterProdutoParaDTOutil;
 
 
     public List<ProdutoDTO> listar() throws BancoDeDadosException {
