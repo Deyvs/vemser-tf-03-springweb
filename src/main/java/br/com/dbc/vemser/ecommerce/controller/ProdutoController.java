@@ -6,8 +6,6 @@ import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.service.ProdutoService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +17,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/produto")
 @AllArgsConstructor
-@NoArgsConstructor
+
 public class ProdutoController {
 
-    @Autowired
-    private ProdutoService produtoService;
+    private final ProdutoService produtoService;
 
     @GetMapping
     public ResponseEntity<List<ProdutoDTO>> listarProdutos() throws BancoDeDadosException {

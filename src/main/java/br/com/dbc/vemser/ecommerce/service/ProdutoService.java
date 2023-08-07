@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProdutoService {
 
-    private ProdutoRepository produtoRepository;
+    private final ProdutoRepository produtoRepository;
 
-    private ConverterProdutoParaDTOutil converterProdutoParaDTOutil;
+    private final ConverterProdutoParaDTOutil converterProdutoParaDTOutil;
 
 
     public List<ProdutoDTO> listar() throws BancoDeDadosException {
