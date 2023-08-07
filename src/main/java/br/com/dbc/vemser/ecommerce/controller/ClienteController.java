@@ -1,8 +1,7 @@
 package br.com.dbc.vemser.ecommerce.controller;
 
-import br.com.dbc.vemser.ecommerce.dto.ClienteCreateDTO;
-import br.com.dbc.vemser.ecommerce.dto.ClienteDTO;
-import br.com.dbc.vemser.ecommerce.entity.Cliente;
+import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteCreateDTO;
+import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.ecommerce.service.ClienteService;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
