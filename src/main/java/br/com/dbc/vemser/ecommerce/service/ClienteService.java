@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.ecommerce.service;
 
-import br.com.dbc.vemser.ecommerce.dto.ClienteCreateDTO;
-import br.com.dbc.vemser.ecommerce.dto.ClienteDTO;
+import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteCreateDTO;
+import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.ecommerce.entity.Cliente;
 import br.com.dbc.vemser.ecommerce.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;

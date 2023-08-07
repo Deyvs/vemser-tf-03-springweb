@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.ecommerce.dto;
+package br.com.dbc.vemser.ecommerce.dto.pedido;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
