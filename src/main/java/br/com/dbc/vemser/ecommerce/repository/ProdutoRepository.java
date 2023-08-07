@@ -141,6 +141,56 @@ public class ProdutoRepository {
         return produto;
     }
 
+    public Produto atualizar(Integer idProduto, Produto produto) throws BancoDeDadosException {
+
+        Connection con = null;
+
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            StringBuilder sql = new StringBuilder();
+
+            sql.append("UPDATE PRODUTO SET");
+            sql.append(" MODELO = ?,");
+            sql.append(" TAMANHO = ?,");
+            sql.append(" COR = ?,");
+            sql.append(" SETOR = ?,");
+            sql.append(" VALOR = ?");
+            sql.append(" WHERE ID_PRODUTO = ?");
+
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
+
+            stmt.setString(1, produto.getModelo());
+            stmt.setString(2, produto.getTamanho());
+            stmt.setString(3, produto.getCor());
+            stmt.setString(4, produto.getSetor());
+            stmt.setDouble(5, produto.getValor());
+            stmt.setInt(6, idProduto);
+
+            // Executa-se a consulta
+            stmt.executeUpdate();
+
+            produto.setIdProduto(idProduto);
+
+            return produto;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
 }
 
 //    public Integer getProximoId(Connection connection) throws BancoDeDadosException {
