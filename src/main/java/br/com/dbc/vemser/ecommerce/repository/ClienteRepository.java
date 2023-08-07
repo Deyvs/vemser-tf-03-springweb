@@ -67,6 +67,7 @@ public class ClienteRepository {
             String sql = "SELECT * FROM CLIENTE WHERE ID_CLIENTE = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
+            System.out.println(stmt);
             stmt.setInt(1, idCliente);
             ResultSet res = stmt.executeQuery();
 
