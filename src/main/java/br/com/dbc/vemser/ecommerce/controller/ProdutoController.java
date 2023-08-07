@@ -1,13 +1,11 @@
 package br.com.dbc.vemser.ecommerce.controller;
 
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoInputDTO;
+import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoCreateDTO;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.service.ProdutoService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +17,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/produto")
 @AllArgsConstructor
-@NoArgsConstructor
+
 public class ProdutoController {
 
-    @Autowired
-    private ProdutoService produtoService;
+    private final ProdutoService produtoService;
 
     @GetMapping
     public ResponseEntity<List<ProdutoDTO>> listarProdutos() throws BancoDeDadosException {
@@ -44,10 +41,10 @@ public class ProdutoController {
     @PostMapping
     public ResponseEntity<ProdutoDTO> salvarProduto(
             @Valid @RequestBody
-            ProdutoInputDTO produtoInputDTO) throws BancoDeDadosException {
+            ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException {
 //        log.info("buscar produtos");
 
-        ProdutoDTO produtoDTO = produtoService.salvar(produtoInputDTO);
+        ProdutoDTO produtoDTO = produtoService.salvar(produtoCreateDTO);
 
         return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
     }
@@ -57,10 +54,10 @@ public class ProdutoController {
             @Positive(message = "O número precisa ser positivo.")
             @PathVariable Integer idProduto,
             @Valid @RequestBody
-            ProdutoInputDTO produtoInputDTO) throws BancoDeDadosException, ProdutoNaoEncontradoException {
+            ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException, ProdutoNaoEncontradoException {
 //        log.info("buscar produtos");
 
-        ProdutoDTO produtoDTO = produtoService.atualizar(idProduto, produtoInputDTO);
+        ProdutoDTO produtoDTO = produtoService.atualizar(idProduto, produtoCreateDTO);
 
         return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
     }

@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.ecommerce.service;
 
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoInputDTO;
+import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoCreateDTO;
 import br.com.dbc.vemser.ecommerce.entity.Produto;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProdutoService {
 
-    private ProdutoRepository produtoRepository;
+    private final ProdutoRepository produtoRepository;
 
-    private ConverterProdutoParaDTOutil converterProdutoParaDTOutil;
+    private final ConverterProdutoParaDTOutil converterProdutoParaDTOutil;
 
 
     public List<ProdutoDTO> listar() throws BancoDeDadosException {
@@ -40,22 +40,22 @@ public class ProdutoService {
     }
 
 
-    public ProdutoDTO salvar(ProdutoInputDTO produtoInputDTO) throws BancoDeDadosException {
+    public ProdutoDTO salvar(ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException {
 
-        Produto produto = converterProdutoParaDTOutil.converteDTOparaProduto(produtoInputDTO);
+        Produto produto = converterProdutoParaDTOutil.converteDTOparaProduto(produtoCreateDTO);
 
         Produto produtoBuscado = produtoRepository.criarProduto(produto);
 
         return converterProdutoParaDTOutil.converteProdutoParaDTO(produtoBuscado);
     }
 
-    public ProdutoDTO atualizar(Integer idProduto, ProdutoInputDTO produtoInputDTO) throws BancoDeDadosException, ProdutoNaoEncontradoException {
+    public ProdutoDTO atualizar(Integer idProduto, ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException, ProdutoNaoEncontradoException {
 
         Produto buscarProduto = produtoRepository.buscarProduto(idProduto);
         if (buscarProduto == null) {
             throw new ProdutoNaoEncontradoException("Produto não cadastrado.");
         }
-        Produto produto = converterProdutoParaDTOutil.converteDTOparaProduto(produtoInputDTO);
+        Produto produto = converterProdutoParaDTOutil.converteDTOparaProduto(produtoCreateDTO);
 
         Produto produtoAtualizado = produtoRepository.atualizar(idProduto, produto);
 

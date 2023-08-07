@@ -1,11 +1,7 @@
 package br.com.dbc.vemser.ecommerce.service;
 
-import br.com.dbc.vemser.ecommerce.dto.PedidoCreateDTO;
-import br.com.dbc.vemser.ecommerce.dto.PedidoOutputDTO;
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
+import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoOutputDTO;
 import br.com.dbc.vemser.ecommerce.entity.Pedido;
-import br.com.dbc.vemser.ecommerce.entity.Produto;
-import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;

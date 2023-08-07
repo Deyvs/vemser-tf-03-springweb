@@ -5,7 +5,6 @@ import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoXProdutoRepository;
 import br.com.dbc.vemser.ecommerce.utilitarias.ConverterProdutoParaDTOutil;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +12,10 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class PedidoXProdutoService {
 
-    private PedidoXProdutoRepository pedidoXProdutoRepository;
-    private ConverterProdutoParaDTOutil converterProdutoParaDTOutil;
+    private final PedidoXProdutoRepository pedidoXProdutoRepository;
+    private final ConverterProdutoParaDTOutil converterProdutoParaDTOutil;
 
     public List<ProdutoDTO> listarProdutosDoPedido(int idPedido) throws BancoDeDadosException {
 
