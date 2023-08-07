@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 public class Pedido {
     private Integer idPedido;
     private Integer idCliente;
-    private Integer idProduto;
     private Double valor;
     private String statusPedido;
 }

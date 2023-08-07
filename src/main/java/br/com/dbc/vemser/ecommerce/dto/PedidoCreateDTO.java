@@ -9,17 +9,12 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class PedidoCreateDTO {
-    @Positive
-    private Integer idProduto;
-
-    @PositiveOrZero
-    private Integer quantidade;
-
-    @NotBlank
-    @Size(max = 3)
-    private String statusPedido;
+//    @Positive
+//    private Integer idCliente;
+//
+//    @NotBlank
+//    @Size(max = 3)
+//    private String statusPedido;
 }

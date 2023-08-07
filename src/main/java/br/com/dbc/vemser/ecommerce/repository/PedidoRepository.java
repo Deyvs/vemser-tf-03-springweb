@@ -116,82 +116,30 @@ public class PedidoRepository {
             }
         }
     }
-    public List<Pedido> listarPedidosDoCliente(Integer idCliente) throws BancoDeDadosException {
-        List<Pedido> pedidos = new ArrayList<>();
-        Connection con = null;
-        try {
-            con = ConexaoBancoDeDados.getConnection();
+    public Pedido getPedidoPorId(Integer idPedido) throws BancoDeDadosException {
 
-            String sql = "SELECT ID_PEDIDO, VALOR, ID_CLIENTE, PAGO FROM PEDIDO WHERE ID_CLIENTE = ?";
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, idCliente);
-            ResultSet res = stmt.executeQuery();
-
-            while (res.next()) {
-                Pedido pedido = getPedidoFromResultSet(res);
-                pedidos.add(pedido);
-            }
-            return pedidos;
-        } catch (SQLException e) {
-            throw new BancoDeDadosException(e.getCause());
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public List<Pedido> listarPedidosNaoPagosDoCliente(Integer idCliente) throws BancoDeDadosException {
-        List<Pedido> pedidos = new ArrayList<>();
-        Connection con = null;
-        try {
-            con = ConexaoBancoDeDados.getConnection();
-
-            String sql = "SELECT ID_PEDIDO, VALOR, ID_CLIENTE, PAGO FROM PEDIDO WHERE ID_CLIENTE = ? AND PAGO = 'N'";
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, idCliente);
-            ResultSet res = stmt.executeQuery();
-
-            while (res.next()) {
-                Pedido pedido = getPedidoFromResultSet(res);
-                pedidos.add(pedido);
-            }
-            return pedidos;
-        } catch (SQLException e) {
-            throw new BancoDeDadosException(e.getCause());
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public Pedido buscarPedido(Integer idPedido) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
             String sql = "SELECT ID_PEDIDO, VALOR, ID_CLIENTE, PAGO FROM PEDIDO WHERE ID_PEDIDO = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
 
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, idPedido);
+            preparedStatement.setInt(1,idPedido);
 
-            ResultSet res = stmt.executeQuery();
+            ResultSet res = preparedStatement.executeQuery();
 
-            if (res.next()) {
-                Pedido pedido = getPedidoFromResultSet(res);
+            if(res.next()){
+
+                Pedido pedido = new Pedido();
+                pedido.setIdPedido(res.getInt("ID_PEDIDO"));
+                pedido.setIdCliente(res.getInt("ID_CLIENTE"));
+                pedido.setValor(res.getDouble("VALOR"));
+                pedido.setStatusPedido(res.getString("PAGO"));
+
                 return pedido;
             }
+
             return null;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
@@ -205,21 +153,21 @@ public class PedidoRepository {
             }
         }
     }
-    public void editarValorDoPedido(Pedido pedido) throws BancoDeDadosException {
+    public boolean editarValorDoPedido(Pedido pedido) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "UPDATE PEDIDO SET VALOR=?, ID_CLIENTE=?, PAGO='N' WHERE ID_PEDIDO=?";
+            String sql = "UPDATE PEDIDO SET VALOR=?  WHERE ID_PEDIDO=?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setDouble(1, pedido.getValor());
-            stmt.setInt(2, pedido.getIdCliente());
-            stmt.setInt(3, pedido.getIdPedido());
+            stmt.setInt(2, pedido.getIdPedido());
 
-            stmt.executeUpdate();
+            Integer res = stmt.executeUpdate();
 
+            return res>0;
 
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
@@ -233,13 +181,129 @@ public class PedidoRepository {
             }
         }
     }
+//    public List<Pedido> listarPedidosDoCliente(Integer idCliente) throws BancoDeDadosException {
+//        List<Pedido> pedidos = new ArrayList<>();
+//        Connection con = null;
+//        try {
+//            con = ConexaoBancoDeDados.getConnection();
+//
+//            String sql = "SELECT ID_PEDIDO, VALOR, ID_CLIENTE, PAGO FROM PEDIDO WHERE ID_CLIENTE = ?";
+//
+//            PreparedStatement stmt = con.prepareStatement(sql);
+//            stmt.setInt(1, idCliente);
+//            ResultSet res = stmt.executeQuery();
+//
+//            while (res.next()) {
+//                Pedido pedido = getPedidoFromResultSet(res);
+//                pedidos.add(pedido);
+//            }
+//            return pedidos;
+//        } catch (SQLException e) {
+//            throw new BancoDeDadosException(e.getCause());
+//        } finally {
+//            try {
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+//
+//    public List<Pedido> listarPedidosNaoPagosDoCliente(Integer idCliente) throws BancoDeDadosException {
+//        List<Pedido> pedidos = new ArrayList<>();
+//        Connection con = null;
+//        try {
+//            con = ConexaoBancoDeDados.getConnection();
+//
+//            String sql = "SELECT ID_PEDIDO, VALOR, ID_CLIENTE, PAGO FROM PEDIDO WHERE ID_CLIENTE = ? AND PAGO = 'N'";
+//
+//            PreparedStatement stmt = con.prepareStatement(sql);
+//            stmt.setInt(1, idCliente);
+//            ResultSet res = stmt.executeQuery();
+//
+//            while (res.next()) {
+//                Pedido pedido = getPedidoFromResultSet(res);
+//                pedidos.add(pedido);
+//            }
+//            return pedidos;
+//        } catch (SQLException e) {
+//            throw new BancoDeDadosException(e.getCause());
+//        } finally {
+//            try {
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+//
+//    public Pedido buscarPedido(Integer idPedido) throws BancoDeDadosException {
+//        Connection con = null;
+//        try {
+//            con = ConexaoBancoDeDados.getConnection();
+//
+//            String sql = "SELECT ID_PEDIDO, VALOR, ID_CLIENTE, PAGO FROM PEDIDO WHERE ID_PEDIDO = ?";
+//
+//            PreparedStatement stmt = con.prepareStatement(sql);
+//            stmt.setInt(1, idPedido);
+//
+//            ResultSet res = stmt.executeQuery();
+//
+//            if (res.next()) {
+//                Pedido pedido = getPedidoFromResultSet(res);
+//                return pedido;
+//            }
+//            return null;
+//        } catch (SQLException e) {
+//            throw new BancoDeDadosException(e.getCause());
+//        } finally {
+//            try {
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+//    public void editarValorDoPedido(Pedido pedido) throws BancoDeDadosException {
+//        Connection con = null;
+//        try {
+//            con = ConexaoBancoDeDados.getConnection();
+//
+//            String sql = "UPDATE PEDIDO SET VALOR=?, ID_CLIENTE=?, PAGO='N' WHERE ID_PEDIDO=?";
+//
+//            PreparedStatement stmt = con.prepareStatement(sql);
+//
+//            stmt.setDouble(1, pedido.getValor());
+//            stmt.setInt(2, pedido.getIdCliente());
+//            stmt.setInt(3, pedido.getIdPedido());
+//
+//            stmt.executeUpdate();
+//
+//
+//        } catch (SQLException e) {
+//            throw new BancoDeDadosException(e.getCause());
+//        } finally {
+//            try {
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
     private Pedido getPedidoFromResultSet(ResultSet res) throws SQLException {
         Pedido pedido = new Pedido();
         pedido.setIdPedido(res.getInt("id_pedido"));
         pedido.setValor(res.getDouble("valor"));
         pedido.setIdCliente(res.getInt("id_cliente"));
         pedido.setStatusPedido(res.getString("pago"));
-        pedido.setIdProduto(res.getInt("id`_produto"));
         return pedido;
     }
 
