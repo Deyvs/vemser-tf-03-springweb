@@ -55,6 +55,7 @@ public class PedidoController {
         }
     }
 
+
     @DeleteMapping("/{idPedido}/carrinho/{idProduto}")
     public ResponseEntity<String> removerProdutoDoPedido(@PathVariable Integer idPedido,
                                                          @PathVariable Integer idProduto) throws Exception {
