@@ -36,16 +36,15 @@ public class PedidoController {
         return new ResponseEntity<>(pedidoService.adicionar(idPessoa), HttpStatus.OK);
     }
     @DeleteMapping("/{idPedido}")
-    public ResponseEntity<Void> delete(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
+    public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
 
          pedidoService.deletePedido(idPedido);
          return ResponseEntity.ok().build();
     }
 
-
     // Implementação dos métodos da classe PedidoXProdutoService
 
-    @PostMapping("/{idPedido}/adicionar-produto/{idProduto}")
+    @PostMapping("/{idPedido}/carrinho/{idProduto}")
     public ResponseEntity<String> adicionarProdutoAoPedido(@PathVariable Integer idPedido,
                                                            @PathVariable Integer idProduto) throws Exception {
         try {
@@ -56,7 +55,7 @@ public class PedidoController {
         }
     }
 
-    @DeleteMapping("{idPedido}/remover-produto/{idProduto}")
+    @DeleteMapping("/{idPedido}/carrinho/{idProduto}")
     public ResponseEntity<String> removerProdutoDoPedido(@PathVariable Integer idPedido,
                                                          @PathVariable Integer idProduto) throws Exception {
         try {
@@ -67,7 +66,7 @@ public class PedidoController {
         }
     }
 
-    @DeleteMapping("/{idPedido}/remover-todos-produtos")
+    @DeleteMapping("/{idPedido}")
     public ResponseEntity<String> removerTodosProdutosDoPedido(@PathVariable Integer idPedido) {
         try {
             pedidoXProdutoService.removerTodosProdutosDoPedido(idPedido);

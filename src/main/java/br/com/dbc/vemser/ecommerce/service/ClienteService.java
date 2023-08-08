@@ -5,14 +5,14 @@ import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.ecommerce.entity.Cliente;
 import br.com.dbc.vemser.ecommerce.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Service
+@AllArgsConstructor
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;

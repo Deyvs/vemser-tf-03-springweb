@@ -19,7 +19,10 @@ public class PedidoService {
     private final ProdutoService produtoService;
     private final ObjectMapper objectMapper;
 
-    public PedidoOutputDTO adicionar(Integer idCliente) throws Exception {
+    public PedidoOutputDTO criarPedido(Integer idCliente) throws Exception {
+        // Validar ID Cliente e ID Produto
+        // Criar pedido
+        // Inserir produto na tabela PedidoxPedidoBruto
         PedidoOutputDTO pedidoOutputDTO = null;
         try {
             Pedido pedido = pedidoRepository.adicionar(new Pedido(null, idCliente, 0.0, "N"));
