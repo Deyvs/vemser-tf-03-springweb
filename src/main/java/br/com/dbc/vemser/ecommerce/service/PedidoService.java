@@ -1,7 +1,9 @@
 package br.com.dbc.vemser.ecommerce.service;
 
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoOutputDTO;
+import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Pedido;
+import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -40,25 +42,28 @@ public class PedidoService {
         return listaOut;
     }
 
-//    public PedidoOutputDTO atualizarValorPedido(Integer idPedido,Integer idProduto) throws Exception{
-//
-//        PedidoOutputDTO pedidoOutputDTO = null;
-//
-//        Produto produtoAchado = objectMapper.convertValue(produtoService.buscarProduto(idProduto), Produto.class);
-//        Pedido pedidoAchado = pedidoRepository.getPedidoPorId(idPedido);
-//
-//        if(pedidoAchado != null  && produtoAchado != null){
-//
-//            pedidoAchado.setValor(pedidoAchado.getValor()+produtoAchado.getValor());
-//
-//            if(pedidoRepository.editarValorDoPedido(pedidoAchado)){
-//
-//                return pedidoOutputDTO = objectMapper.convertValue(pedidoAchado,PedidoOutputDTO.class);
-//            }
-//        }
-//
-//        return pedidoOutputDTO;
-//    }
+    public Boolean atualizarValorPedido(Integer idPedido,Integer idProduto) throws Exception {
+
+        Pedido pedidoAchado = pedidoRepository.getPedidoPorId(idPedido);
+
+        if (pedidoAchado == null) {
+            throw new ProdutoNaoEncontradoException("Pedido não encontrado");
+        }
+
+        if (pedidoAchado.getStatusPedido().equalsIgnoreCase("S")) {
+            throw new ProdutoNaoEncontradoException("Pedido finalizado");
+        }
+
+        ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto);
+
+        Double valor = pedidoAchado.getValor() + produtoDTO.getValor();
+
+        if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
+            return true;
+        }
+
+        return false;
+    }
 
 
     public void deletePedido(Integer idPedido) throws Exception{

@@ -56,6 +56,14 @@ public class PedidoController {
         }
     }
 
+    @GetMapping("/atualizar/{idPedido}/{idProduto}")
+    public ResponseEntity<Void> atualizarValor(@PathVariable ("idPedido") Integer idPedido,
+                                               @PathVariable("idProduto") Integer idProduto) throws Exception{
+        pedidoService.atualizarValorPedido(idPedido,idProduto);
+        return ResponseEntity.ok().build();
+    }
+
+
     @DeleteMapping("{idPedido}/remover-produto/{idProduto}")
     public ResponseEntity<String> removerProdutoDoPedido(@PathVariable Integer idPedido,
                                                          @PathVariable Integer idProduto) throws Exception {
