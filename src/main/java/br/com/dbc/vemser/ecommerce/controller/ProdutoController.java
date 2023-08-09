@@ -1,9 +1,10 @@
 package br.com.dbc.vemser.ecommerce.controller;
 
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoCreateDTO;
+import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
+import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.service.ProdutoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class ProdutoController {
     @GetMapping("/{idProduto}")
     public ResponseEntity<ProdutoDTO> buscarProduto(
             @Positive(message = "O número precisa ser positivo.")
-            @PathVariable Integer idProduto) throws BancoDeDadosException, ProdutoNaoEncontradoException {
+            @PathVariable Integer idProduto) throws BancoDeDadosException, RegraDeNegocioException {
 //        log.info("buscar produtos");
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto);
         return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
@@ -54,12 +55,18 @@ public class ProdutoController {
             @Positive(message = "O número precisa ser positivo.")
             @PathVariable Integer idProduto,
             @Valid @RequestBody
-            ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException, ProdutoNaoEncontradoException {
+            ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException {
 //        log.info("buscar produtos");
 
         ProdutoDTO produtoDTO = produtoService.atualizar(idProduto, produtoCreateDTO);
 
         return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{idProduto}")
+    public ResponseEntity<Void> delete(@PathVariable Integer idProduto) throws RegraDeNegocioException, BancoDeDadosException {
+        produtoService.deletar(idProduto);
+        return ResponseEntity.ok().build();
     }
 
 

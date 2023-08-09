@@ -24,7 +24,7 @@ public class ConexaoBancoDeDados {
     // Configuração dos parâmetros de autenticação
     private static final String USER = "system";
     private static final String PASS = "oracle";
-    private static final String SCHEMA = "CAMISARIA_DBC";
+    private static final String SCHEMA = "VEM_SER_TF";
 
     public static Connection getConnection() throws SQLException {
         String url = "jdbc:oracle:thin:@" + SERVER + ":" + PORT + ":" + DATABASE;

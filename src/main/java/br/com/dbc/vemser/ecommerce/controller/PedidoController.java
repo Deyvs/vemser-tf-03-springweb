@@ -37,7 +37,7 @@ public class PedidoController {
                                                        @RequestBody @Valid PedidoCreateDTO idPedido) throws Exception{
         return new ResponseEntity<>(pedidoService.criarPedido(idPessoa,idPedido), HttpStatus.OK);
     }
-  
+
     @DeleteMapping("/{idPedido}")
     public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
 
