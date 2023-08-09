@@ -49,13 +49,13 @@ public class PedidoController implements PedidoControllerDoc {
     // Implementação dos métodos da classe PedidoXProdutoService
 
     @PostMapping("/{idPedido}/carrinho/{idProduto}") //  add prod no pedido
-    public ResponseEntity<PedidoOutputDTO> adicionarProdutoAoPedido(@PathVariable Integer idPedido,
+    public ResponseEntity<PedidoDTO> adicionarProdutoAoPedido(@PathVariable Integer idPedido,
                                                            @PathVariable Integer idProduto) throws Exception {
         return new ResponseEntity<>(pedidoService.adicionarProdutoaoPedido(idPedido,idProduto),HttpStatus.OK);
     }
 
     @DeleteMapping("/{idPedido}/carrinho/{idProduto}")
-    public ResponseEntity<PedidoOutputDTO> removerProdutoDoPedido(@PathVariable Integer idPedido,
+    public ResponseEntity<PedidoDTO> removerProdutoDoPedido(@PathVariable Integer idPedido,
                                                          @PathVariable Integer idProduto) throws Exception {
        return new ResponseEntity<>(pedidoService.RemoverProdutoDoPedido(idPedido,idProduto),HttpStatus.OK);
     }

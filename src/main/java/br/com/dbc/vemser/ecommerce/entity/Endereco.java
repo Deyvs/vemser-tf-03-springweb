@@ -29,6 +29,9 @@ public class Endereco {
     private String cidade;
     @NotNull
     private String estado;
+
+    @NotNull
+    private String bairro;
 }
 
 

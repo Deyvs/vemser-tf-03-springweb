@@ -52,7 +52,7 @@ public interface PedidoControllerDoc {
             }
     )
     @PostMapping("/{idPedido}/carrinho/{idProduto}")
-    ResponseEntity<String> adicionarProdutoAoPedido(@PathVariable Integer idPedido,
+    ResponseEntity<PedidoDTO> adicionarProdutoAoPedido(@PathVariable Integer idPedido,
                                                     @PathVariable Integer idProduto) throws Exception;
 
     @Operation(summary = "Deletar pedido por ID", description = "Deleta pedido informado pelo ID no banco")
@@ -80,6 +80,6 @@ public interface PedidoControllerDoc {
             }
     )
     @DeleteMapping("/{idPedido}/carrinho/{idProduto}")
-    ResponseEntity<String> removerProdutoDoPedido(@PathVariable Integer idPedido,
+    ResponseEntity<PedidoDTO> removerProdutoDoPedido(@PathVariable Integer idPedido,
                                                          @PathVariable Integer idProduto) throws Exception;
 }

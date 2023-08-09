@@ -5,14 +5,18 @@ import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Endereco;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.ecommerce.exceptions.EscolherOpcaoException;
+import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.EnderecoRepository;
 import br.com.dbc.vemser.ecommerce.utils.NotificacaoByEmail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Service
@@ -27,35 +31,36 @@ public class EnderecoService {
         List<Endereco> enderecos = enderecoRepository.listarEnderecos();
         List<EnderecoDTO> enderecoDTOS = new ArrayList<>();
 
-        for(Endereco endereco : enderecos) {
+        for (Endereco endereco : enderecos) {
             enderecoDTOS.add(converterByEnderecoDTO(endereco));
         }
         return enderecoDTOS;
 
     }
 
-    public EnderecoDTO getEnderecoById(Integer idEndereco) throws Exception {
+    public EnderecoDTO getEnderecoById(Integer idEndereco) throws BancoDeDadosException {
         Endereco endereco = enderecoRepository.getEnderecoById(idEndereco);
         return converterByEnderecoDTO(endereco);
     }
 
-    public EnderecoDTO listarEnderecosByIdPessoa(Integer idPessoa) throws Exception {
-        Endereco endereco = enderecoRepository.listarEnderecoByIdPessoa(idPessoa);
-        return converterByEnderecoDTO(endereco);
+    public List<EnderecoDTO> listarEnderecosByIdPessoa(Integer idPessoa) throws BancoDeDadosException {
+
+        return enderecoRepository.listarEnderecoByIdPessoa(idPessoa)
+                .stream().map(this::converterByEnderecoDTO).collect(Collectors.toList());
     }
 
-    public EnderecoDTO create(Integer idCliente, EnderecoCreateDTO enderecoCreateDTO) throws Exception {
-        ClienteDTO clienteDTO = clienteService.getClienteById(idCliente);
+    public EnderecoDTO create(Integer idCliente, EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException, EscolherOpcaoException, MessagingException {
+//        ClienteDTO clienteDTO = clienteService.getClienteById(idCliente);
         Endereco entity = converterByEndereco(enderecoCreateDTO);
 
-        Endereco enderecoCreated = enderecoRepository.create(idCliente , entity);
+        Endereco enderecoCreated = enderecoRepository.create(idCliente, entity);
 
         EnderecoDTO enderecoDTO = converterByEnderecoDTO(enderecoCreated);
-        notificacaoByEmail.notificarByEmailEndereco(clienteDTO, "criado");
+//        notificacaoByEmail.notificarByEmailEndereco(clienteDTO, "criado");
         return enderecoDTO;
     }
 
-    public EnderecoDTO update(Integer idEndereco, EnderecoCreateDTO enderecoCreateDTO) throws Exception {
+    public EnderecoDTO update(Integer idEndereco, EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException, MessagingException {
         Endereco entity = converterByEndereco(enderecoCreateDTO);
         entity.setIdEndereco(idEndereco);
 
@@ -79,6 +84,7 @@ public class EnderecoService {
 
     public EnderecoDTO converterByEnderecoDTO(Endereco endereco) {
         EnderecoDTO enderecoDTO = new EnderecoDTO();
+
         enderecoDTO.setIdEndereco(endereco.getIdEndereco());
         enderecoDTO.setIdCliente(endereco.getIdCliente());
         enderecoDTO.setNumero(endereco.getNumero());
@@ -87,6 +93,8 @@ public class EnderecoService {
         enderecoDTO.setCep(endereco.getCep());
         enderecoDTO.setCidade(endereco.getCidade());
         enderecoDTO.setEstado(endereco.getEstado());
+        enderecoDTO.setLogradouro(endereco.getLogradouro());
+        enderecoDTO.setBairro(endereco.getBairro());
 
         return enderecoDTO;
     }
@@ -99,6 +107,8 @@ public class EnderecoService {
         entity.setCep(enderecoCreateDTO.getCep());
         entity.setCidade(enderecoCreateDTO.getCidade());
         entity.setEstado(enderecoCreateDTO.getEstado());
+        entity.setIdCliente(enderecoCreateDTO.getIdCliente());
+        entity.setBairro(enderecoCreateDTO.getBairro());
 
         return entity;
     }
