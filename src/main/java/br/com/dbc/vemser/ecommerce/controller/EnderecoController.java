@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.ecommerce.controller;
 
+import br.com.dbc.vemser.ecommerce.doc.EnderecoControllerDoc;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Endereco;
@@ -19,7 +20,8 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/endereco")
-public class EnderecoController {
+public class EnderecoController implements EnderecoControllerDoc {
+
     private final EnderecoService enderecoService;
 
     @GetMapping

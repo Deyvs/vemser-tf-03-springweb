@@ -1,5 +1,7 @@
 package br.com.dbc.vemser.ecommerce.dto.endereco;
 
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,20 +15,41 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class EnderecoCreateDTO {
 
+    @NotNull(message = "O id da pessoa não pode ser nulo")
+    @Schema(description = "ID da pessoa associada ao endereço", required = true)
     private Integer idCliente;
+
+    @NotNull(message = "O tipo de endereço não pode ser nulo")
+    @Schema(description = "Tipo de endereço", required = true, example = "RESIDENCIAL")
+    private TipoEndereco tipoEndereco;
+
     @NotBlank
     @Size(max = 250, message = "Não pode conter mais de 250 caracteres")
+    @Schema(description = "Logradouro do endereço", required = true, example = "Rua A")
     private String logradouro;
-    @NotNull
+
+    @NotNull(message = "O número não pode ser nulo")
+    @Schema(description = "Número do endereço", required = true, example = "123")
     private Integer numero;
 
     private String complemento;
-    @NotBlank
-    @Size(max = 8, message = "Não pode conter mais que 8 caracteres")
+
+    @NotNull(message = "O CEP não pode ser vazio ou nulo")
+    @Size(max = 8, message = "O CEP deve conter no máximo 8 caracteres")
+    @Schema(description = "CEP do endereço", required = true, example = "12345678")
     private String cep;
+
     @NotBlank
     @Size(max = 250, message = "Não pode conter mais de 250 caracteres")
+    @Schema(description = "Cidade do endereço", required = true, example = "Florianópolis")
     private String cidade;
-    @NotNull
+
+    @NotNull(message = "O estado não pode ser nulo")
+    @Schema(description = "Cidade do endereço", required = true, example = "SC")
     private String estado;
+
+    @NotNull(message = "O país não pode ser nulo")
+    @Schema(description = "Cidade do endereço", required = true, example = "Brasil")
+    private String pais;
+
 }
