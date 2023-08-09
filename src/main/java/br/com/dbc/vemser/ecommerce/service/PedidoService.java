@@ -1,8 +1,13 @@
 package br.com.dbc.vemser.ecommerce.service;
 
+import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
+import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoOutputDTO;
+import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Pedido;
+import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
+import br.com.dbc.vemser.ecommerce.repository.PedidoXProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -17,20 +23,32 @@ public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
     private final ProdutoService produtoService;
+    private final PedidoXProdutoRepository pedidoXProdutoRepository;
+    private final ClienteService clienteService;
     private final ObjectMapper objectMapper;
 
-    public PedidoOutputDTO criarPedido(Integer idCliente) throws Exception {
-        // Validar ID Cliente e ID Produto
-        // Criar pedido
-        // Inserir produto na tabela PedidoxPedidoBruto
-        PedidoOutputDTO pedidoOutputDTO = null;
-        try {
-            Pedido pedido = pedidoRepository.adicionar(new Pedido(null, idCliente, 0.0, "N"));
-            pedidoOutputDTO = objectMapper.convertValue(pedido,PedidoOutputDTO.class);
-            return  pedidoOutputDTO;
-        }catch (SQLException e){
-          e.printStackTrace();
+    public PedidoOutputDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws Exception {
+
+        ClienteDTO cliente = clienteService.getClienteById(idCliente);
+        if(cliente == null ){
+            throw new ProdutoNaoEncontradoException("Cliente não encontrado");
         }
+        ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto.getIdProduto());
+        if(produtoDTO == null ){
+            throw new ProdutoNaoEncontradoException("Produto não encontrado");
+        }
+        PedidoOutputDTO pedidoOutputDTO = objectMapper.convertValue(pedidoRepository.adicionar(
+                new Pedido(null, idCliente, produtoDTO.getValor(),"n"))
+                ,PedidoOutputDTO.class);
+
+        pedidoXProdutoRepository.adicionarProdutoAoPedido(pedidoOutputDTO.getIdPedido(),idProduto.getIdProduto());
+
+        List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoOutputDTO.getIdPedido())
+                .stream()
+                .map(produto -> objectMapper.convertValue(produto,ProdutoDTO.class)).collect(Collectors.toList());
+
+        pedidoOutputDTO.setProdutos(produtosPedido);
+
         return pedidoOutputDTO;
     }
 
@@ -43,25 +61,28 @@ public class PedidoService {
         return listaOut;
     }
 
-//    public PedidoOutputDTO atualizarValorPedido(Integer idPedido,Integer idProduto) throws Exception{
-//
-//        PedidoOutputDTO pedidoOutputDTO = null;
-//
-//        Produto produtoAchado = objectMapper.convertValue(produtoService.buscarProduto(idProduto), Produto.class);
-//        Pedido pedidoAchado = pedidoRepository.getPedidoPorId(idPedido);
-//
-//        if(pedidoAchado != null  && produtoAchado != null){
-//
-//            pedidoAchado.setValor(pedidoAchado.getValor()+produtoAchado.getValor());
-//
-//            if(pedidoRepository.editarValorDoPedido(pedidoAchado)){
-//
-//                return pedidoOutputDTO = objectMapper.convertValue(pedidoAchado,PedidoOutputDTO.class);
-//            }
-//        }
-//
-//        return pedidoOutputDTO;
-//    }
+    public Boolean atualizarValorPedido(Integer idPedido,Integer idProduto) throws Exception {
+
+        Pedido pedidoAchado = pedidoRepository.getPedidoPorId(idPedido);
+
+        if (pedidoAchado == null) {
+            throw new ProdutoNaoEncontradoException("Pedido não encontrado");
+        }
+
+        if (pedidoAchado.getStatusPedido().equalsIgnoreCase("S")) {
+            throw new ProdutoNaoEncontradoException("Pedido finalizado");
+        }
+
+        ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto);
+
+        Double valor = pedidoAchado.getValor() + produtoDTO.getValor();
+
+        if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
+            return true;
+        }
+
+        return false;
+    }
 
 
     public void deletePedido(Integer idPedido) throws Exception{

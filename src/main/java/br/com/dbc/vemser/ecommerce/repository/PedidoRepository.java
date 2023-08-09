@@ -153,7 +153,7 @@ public class PedidoRepository {
             }
         }
     }
-    public boolean editarValorDoPedido(Pedido pedido) throws BancoDeDadosException {
+    public boolean editarValorDoPedido(Double valor, Integer idPedido) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -162,8 +162,8 @@ public class PedidoRepository {
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setDouble(1, pedido.getValor());
-            stmt.setInt(2, pedido.getIdPedido());
+            stmt.setDouble(1, valor);
+            stmt.setInt(2, idPedido);
 
             Integer res = stmt.executeUpdate();
 
