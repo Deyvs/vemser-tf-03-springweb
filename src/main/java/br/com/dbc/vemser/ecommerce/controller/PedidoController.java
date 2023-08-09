@@ -35,12 +35,12 @@ public class PedidoController {
 
         return new ResponseEntity<>(pedidoService.criarPedido(idPessoa), HttpStatus.OK);
     }
-//    @DeleteMapping("/{idPedido}")
-//    public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
-//
-//         pedidoService.deletePedido(idPedido);
-//         return ResponseEntity.ok().build();
-//    }
+    @DeleteMapping("/{idPedido}")
+    public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
+
+         pedidoService.deletePedido(idPedido);
+         return ResponseEntity.ok().build();
+    }
 
     // Implementação dos métodos da classe PedidoXProdutoService
 
@@ -66,15 +66,15 @@ public class PedidoController {
         }
     }
 
-    @DeleteMapping("/{idPedido}")
-    public ResponseEntity<String> removerTodosProdutosDoPedido(@PathVariable Integer idPedido) {
-        try {
-            pedidoXProdutoService.removerTodosProdutosDoPedido(idPedido);
-            return ResponseEntity.ok("Todos os produtos foram removidos do seu pedido com sucesso.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao remover todos os seus produtos do pedido.");
-        }
-    }
+//    @DeleteMapping("/{idPedido}")
+//    public ResponseEntity<String> removerTodosProdutosDoPedido(@PathVariable Integer idPedido) {
+//        try {
+//            pedidoXProdutoService.removerTodosProdutosDoPedido(idPedido);
+//            return ResponseEntity.ok("Todos os produtos foram removidos do seu pedido com sucesso.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao remover todos os seus produtos do pedido.");
+//        }
+//    }
 
 
 }
