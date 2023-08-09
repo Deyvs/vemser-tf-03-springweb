@@ -11,8 +11,6 @@ import br.com.dbc.vemser.ecommerce.repository.PedidoXProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,7 +59,38 @@ public class PedidoService {
         return listaOut;
     }
 
-    public Boolean atualizarValorPedido(Integer idPedido,Integer idProduto) throws Exception {
+    public PedidoOutputDTO adicionarProdutoaoPedido(Integer idPedido, Integer idProduto) throws Exception{
+        Boolean status = atualizarValorPedido("i",idPedido,idProduto);
+        if(status){
+            pedidoXProdutoRepository.adicionarProdutoAoPedido(idPedido,idProduto);
+        }
+        PedidoOutputDTO pedidoOutputDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoOutputDTO.class);
+
+        List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoOutputDTO.getIdPedido())
+                .stream()
+                .map(produto -> objectMapper.convertValue(produto,ProdutoDTO.class)).collect(Collectors.toList());
+
+        pedidoOutputDTO.setProdutos(produtosPedido);
+
+        return pedidoOutputDTO;
+    }
+    public PedidoOutputDTO RemoverProdutoDoPedido(Integer idPedido, Integer idProduto) throws Exception{
+        Boolean status = atualizarValorPedido("d",idPedido,idProduto);
+        if(status){
+            pedidoXProdutoRepository.removerProdutoDoPedido(idPedido,idProduto);
+        }
+        PedidoOutputDTO pedidoOutputDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoOutputDTO.class);
+
+        List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoOutputDTO.getIdPedido())
+                .stream()
+                .map(produto -> objectMapper.convertValue(produto,ProdutoDTO.class)).collect(Collectors.toList());
+
+        pedidoOutputDTO.setProdutos(produtosPedido);
+
+        return pedidoOutputDTO;
+    }
+
+    public Boolean atualizarValorPedido(String flag,Integer idPedido,Integer idProduto) throws Exception {
 
         Pedido pedidoAchado = pedidoRepository.getPedidoPorId(idPedido);
 
@@ -72,17 +101,35 @@ public class PedidoService {
         if (pedidoAchado.getStatusPedido().equalsIgnoreCase("S")) {
             throw new ProdutoNaoEncontradoException("Pedido finalizado");
         }
-
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto);
 
-        Double valor = pedidoAchado.getValor() + produtoDTO.getValor();
+        if(produtoDTO == null){
+            throw new ProdutoNaoEncontradoException("Produto não encontrado");
+        }
 
-        if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
-            return true;
+        if(flag.equalsIgnoreCase("i")){
+
+            Double valor = pedidoAchado.getValor() + produtoDTO.getValor();
+
+            if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
+
+                return true;
+            }
+
+        }
+        if (flag.equalsIgnoreCase("d")) {
+
+            Double valor = pedidoAchado.getValor() - produtoDTO.getValor();
+
+            if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
+
+                return true;
+            }
         }
 
         return false;
     }
+
 
 
     public void deletePedido(Integer idPedido) throws Exception{
