@@ -10,7 +10,6 @@ import br.com.dbc.vemser.ecommerce.utils.NotificacaoByEmail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +27,7 @@ public class EnderecoService {
         List<Endereco> enderecos = enderecoRepository.listarEnderecos();
         List<EnderecoDTO> enderecoDTOS = new ArrayList<>();
 
-        for(Endereco endereco : enderecos) {
+        for (Endereco endereco : enderecos) {
             enderecoDTOS.add(converterByEnderecoDTO(endereco));
         }
         return enderecoDTOS;
@@ -39,20 +38,19 @@ public class EnderecoService {
         Endereco endereco = enderecoRepository.getEnderecoById(idEndereco);
         return converterByEnderecoDTO(endereco);
     }
-
     public List<EnderecoDTO> listarEnderecoByIdCliente(Integer idCliente) throws Exception {
         return enderecoRepository.listarEnderecoByIdCliente(idCliente)
                 .stream().map(this::converterByEnderecoDTO).collect(Collectors.toList());
     }
 
     public EnderecoDTO create(Integer idCliente, EnderecoCreateDTO enderecoCreateDTO) throws Exception {
-        ClienteDTO clienteDTO = clienteService.getClienteById(idCliente);
+//        ClienteDTO clienteDTO = clienteService.getClienteById(idCliente);
         Endereco entity = converterByEndereco(enderecoCreateDTO);
 
-        Endereco enderecoCreated = enderecoRepository.create(idCliente , entity);
+        Endereco enderecoCreated = enderecoRepository.create(idCliente, entity);
 
         EnderecoDTO enderecoDTO = converterByEnderecoDTO(enderecoCreated);
-        notificacaoByEmail.notificarByEmailEndereco(clienteDTO, "criado");
+//        notificacaoByEmail.notificarByEmailEndereco(clienteDTO, "criado");
         return enderecoDTO;
     }
 

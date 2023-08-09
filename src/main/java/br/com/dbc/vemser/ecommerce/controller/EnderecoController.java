@@ -28,7 +28,9 @@ public class EnderecoController implements EnderecoControllerDoc {
     }
 
     @GetMapping("/{idEndereco}")
-    public ResponseEntity<EnderecoDTO> getEnderecoById(@Positive(message = "id deve ser maior que zero") @PathVariable("idEndereco") Integer idEndereco) throws Exception {
+    public ResponseEntity<EnderecoDTO> getEnderecoById(@Positive(message = "id deve ser maior que zero")
+                                                           @PathVariable("idEndereco")
+                                                           Integer idEndereco) throws Exception {
         return new ResponseEntity<>(enderecoService.getEnderecoById(idEndereco), HttpStatus.OK);
     }
     @GetMapping("/cliente/{idCliente}")

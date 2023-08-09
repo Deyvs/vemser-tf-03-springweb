@@ -60,8 +60,7 @@ public class EnderecoRepository {
                 e.printStackTrace();
             }
         }
-    };
-
+    }
     public Endereco getEnderecoById(Integer idEndereco) throws BancoDeDadosException {
         Connection con = null;
         try {
@@ -91,8 +90,8 @@ public class EnderecoRepository {
             }
         }
     }
-
     public List<Endereco> listarEnderecoByIdCliente(Integer idCliente) throws BancoDeDadosException {
+
         List<Endereco> enderecos = new ArrayList<>();
         Connection con = null;
         try {
@@ -133,10 +132,10 @@ public class EnderecoRepository {
             Integer proximoIdEndereco = this.getProximoId(con);
             endereco.setIdEndereco(proximoIdEndereco);
 
+
             String sqlEndereco = "INSERT INTO ENDERECO\n" +
                     "(ID_ENDERECO, CEP, CIDADE, BAIRRO, LOGRADOURO, NUMERO, COMPLEMENTO, UF_ESTADO, ID_CLIENTE)\n" +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)\n";
-
             PreparedStatement stmtEndereco = con.prepareStatement(sqlEndereco);
 
             stmtEndereco.setInt(1, proximoIdEndereco);
@@ -150,6 +149,7 @@ public class EnderecoRepository {
             stmtEndereco.setInt(9, idCliente);
 
             stmtEndereco.executeUpdate();
+            endereco.setIdCliente(idCliente);
 
             endereco.setIdCliente(idCliente);
 
@@ -174,6 +174,7 @@ public class EnderecoRepository {
     public Endereco update(Integer idEndereco, Endereco endereco) throws BancoDeDadosException {
         Connection con = null;
 
+
         try {
             con = ConexaoBancoDeDados.getConnection();
 
@@ -181,6 +182,7 @@ public class EnderecoRepository {
             sql.append("UPDATE ENDERECO SET");
             sql.append(" ID_CLIENTE = ?,");
             sql.append(" LOGRADOURO = ?,");
+
             sql.append(" NUMERO = ?,");
             sql.append(" BAIRRO = ?,");
             sql.append(" CIDADE = ?,");
@@ -252,6 +254,8 @@ public class EnderecoRepository {
     }
 
     private Endereco getClienteFromResultSet(ResultSet res) throws SQLException {
+
+
         Endereco endereco = new Endereco();
         endereco.setIdEndereco(res.getInt("ID_ENDERECO"));
         endereco.setIdCliente(res.getInt("id_cliente"));

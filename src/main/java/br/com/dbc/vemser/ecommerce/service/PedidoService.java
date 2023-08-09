@@ -27,7 +27,7 @@ public class PedidoService {
     private final ClienteService clienteService;
     private final ObjectMapper objectMapper;
 
-    public PedidoDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws BancoDeDadosException, RegraDeNegocioException {
+    public PedidoDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws Exception {
 
         ClienteDTO cliente = clienteService.getClienteById(idCliente);
 
@@ -52,7 +52,15 @@ public class PedidoService {
         List<PedidoDTO>listaOut = new ArrayList<>();
 
         for(Pedido p: pedidoRepository.listar()){
-            listaOut.add(objectMapper.convertValue(p, PedidoDTO.class));
+            PedidoDTO pedidoDTO = objectMapper.convertValue(p,PedidoDTO.class);
+
+            List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoDTO.getIdPedido())
+                    .stream()
+                    .map(produto -> objectMapper.convertValue(produto,ProdutoDTO.class)).collect(Collectors.toList());
+
+            pedidoDTO.setProdutos(produtosPedido);
+            listaOut.add(pedidoDTO);
+
         }
         return listaOut;
     }
@@ -62,7 +70,9 @@ public class PedidoService {
         if(status){
             pedidoXProdutoRepository.adicionarProdutoAoPedido(idPedido,idProduto);
         }
+
         PedidoDTO pedidoDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoDTO.class);
+
 
         List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoDTO.getIdPedido())
                 .stream()
@@ -77,6 +87,7 @@ public class PedidoService {
         if(status){
             pedidoXProdutoRepository.removerProdutoDoPedido(idPedido,idProduto);
         }
+
         PedidoDTO pedidoDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoDTO.class);
 
         List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoDTO.getIdPedido())
