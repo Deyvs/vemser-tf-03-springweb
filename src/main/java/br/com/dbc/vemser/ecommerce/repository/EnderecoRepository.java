@@ -139,8 +139,8 @@ public class EnderecoRepository {
 
 
             String sqlEndereco = "INSERT INTO ENDERECO\n" +
-                    "(ID_ENDERECO, CEP, CIDADE, TIPO_ENDERECO, BAIRRO, LOGRADOURO, NUMERO, COMPLEMENTO, PAIS, UF_ESTADO, ID_CLIENTE)\n" +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)\n";
+                    "(ID_ENDERECO, CEP, CIDADE, BAIRRO, LOGRADOURO, NUMERO, COMPLEMENTO, UF_ESTADO, ID_CLIENTE)\n" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)\n";
 
 
             PreparedStatement stmtEndereco = con.prepareStatement(sqlEndereco);
@@ -148,14 +148,12 @@ public class EnderecoRepository {
             stmtEndereco.setInt(1, proximoIdEndereco);
             stmtEndereco.setString(2, endereco.getCep());
             stmtEndereco.setString(3, endereco.getCidade());
-            stmtEndereco.setString(4, endereco.getTipoEndereco());
-            stmtEndereco.setString(5, endereco.getBairro());
-            stmtEndereco.setString(6, endereco.getLogradouro());
-            stmtEndereco.setInt(7, endereco.getNumero());
-            stmtEndereco.setString(8, endereco.getComplemento());
-            stmtEndereco.setString(9, endereco.getPais());
-            stmtEndereco.setString(10, endereco.getEstado());
-            stmtEndereco.setInt(11, idCliente);
+            stmtEndereco.setString(4, endereco.getBairro());
+            stmtEndereco.setString(5, endereco.getLogradouro());
+            stmtEndereco.setInt(6, endereco.getNumero());
+            stmtEndereco.setString(7, endereco.getComplemento());
+            stmtEndereco.setString(8, endereco.getEstado());
+            stmtEndereco.setInt(9, idCliente);
 
             stmtEndereco.executeUpdate();
             endereco.setIdCliente(idCliente);
@@ -189,29 +187,25 @@ public class EnderecoRepository {
             sql.append("UPDATE ENDERECO SET");
             sql.append(" ID_CLIENTE = ?,");
             sql.append(" LOGRADOURO = ?,");
-            sql.append(" PAIS = ?,");
             sql.append(" NUMERO = ?,");
             sql.append(" BAIRRO = ?,");
             sql.append(" CIDADE = ?,");
             sql.append(" CEP = ?,");
             sql.append(" UF_ESTADO = ?,");
-            sql.append(" COMPLEMENTO = ?,");
-            sql.append(" TIPO_ENDERECO = ?");
+            sql.append(" COMPLEMENTO = ?");
             sql.append(" WHERE ID_ENDERECO =?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
             stmt.setInt(1, endereco.getIdCliente());
             stmt.setString(2, endereco.getLogradouro());
-            stmt.setString(3, endereco.getPais());
-            stmt.setInt(4, endereco.getNumero());
-            stmt.setString(5, endereco.getBairro());
-            stmt.setString(6, endereco.getCidade());
-            stmt.setString(7, endereco.getCep());
-            stmt.setString(8, endereco.getEstado());
-            stmt.setString(9, endereco.getComplemento());
-            stmt.setString(10, endereco.getTipoEndereco());
-            stmt.setInt(11, idEndereco);
+            stmt.setInt(3, endereco.getNumero());
+            stmt.setString(4, endereco.getBairro());
+            stmt.setString(5, endereco.getCidade());
+            stmt.setString(6, endereco.getCep());
+            stmt.setString(7, endereco.getEstado());
+            stmt.setString(8, endereco.getComplemento());
+            stmt.setInt(9, idEndereco);
 
             // Executa-se a consulta
             stmt.executeUpdate();
@@ -275,8 +269,6 @@ public class EnderecoRepository {
         endereco.setNumero(res.getInt("NUMERO"));
         endereco.setComplemento(res.getString("COMPLEMENTO"));
         endereco.setEstado(res.getString("UF_ESTADO"));
-        endereco.setPais(res.getString("PAIS"));
-        endereco.setTipoEndereco(res.getString("TIPO_ENDERECO"));
         endereco.setBairro(res.getString("BAIRRO"));
 
         return endereco;
