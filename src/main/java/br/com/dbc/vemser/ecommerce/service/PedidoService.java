@@ -5,7 +5,9 @@ import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoOutputDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Pedido;
+import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
+import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
 import br.com.dbc.vemser.ecommerce.repository.PedidoXProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,16 +29,12 @@ public class PedidoService {
     private final ClienteService clienteService;
     private final ObjectMapper objectMapper;
 
-    public PedidoOutputDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws Exception {
+    public PedidoOutputDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws BancoDeDadosException, RegraDeNegocioException {
 
         ClienteDTO cliente = clienteService.getClienteById(idCliente);
-        if(cliente == null ){
-            throw new ProdutoNaoEncontradoException("Cliente não encontrado");
-        }
+
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto.getIdProduto());
-        if(produtoDTO == null ){
-            throw new ProdutoNaoEncontradoException("Produto não encontrado");
-        }
+
         PedidoOutputDTO pedidoOutputDTO = objectMapper.convertValue(pedidoRepository.adicionar(
                 new Pedido(null, idCliente, produtoDTO.getValor(),"n"))
                 ,PedidoOutputDTO.class);
@@ -52,7 +50,7 @@ public class PedidoService {
         return pedidoOutputDTO;
     }
 
-    public List<PedidoOutputDTO> listar() throws Exception{
+    public List<PedidoOutputDTO> listar() throws BancoDeDadosException {
         List<PedidoOutputDTO>listaOut = new ArrayList<>();
 
         for(Pedido p: pedidoRepository.listar()){
@@ -61,16 +59,17 @@ public class PedidoService {
         return listaOut;
     }
 
-    public Boolean atualizarValorPedido(Integer idPedido,Integer idProduto) throws Exception {
+    public Boolean atualizarValorPedido(Integer idPedido,Integer idProduto) throws BancoDeDadosException, RegraDeNegocioException {
 
         Pedido pedidoAchado = pedidoRepository.getPedidoPorId(idPedido);
 
+
         if (pedidoAchado == null) {
-            throw new ProdutoNaoEncontradoException("Pedido não encontrado");
+            throw new RegraDeNegocioException("Pedido não encontrado");
         }
 
         if (pedidoAchado.getStatusPedido().equalsIgnoreCase("S")) {
-            throw new ProdutoNaoEncontradoException("Pedido finalizado");
+            throw new RegraDeNegocioException("Pedido finalizado");
         }
 
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto);
@@ -85,7 +84,7 @@ public class PedidoService {
     }
 
 
-    public void deletePedido(Integer idPedido) throws Exception{
+    public void deletePedido(Integer idPedido) throws BancoDeDadosException {
         pedidoRepository.remover(idPedido);
     }
 
