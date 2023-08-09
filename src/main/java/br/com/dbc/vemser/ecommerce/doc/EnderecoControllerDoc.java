@@ -24,7 +24,7 @@ public interface EnderecoControllerDoc {
             }
     )
     @GetMapping
-    ResponseEntity<List<EnderecoDTO>> listarEnderecos();
+    ResponseEntity<List<EnderecoDTO>> listarEnderecos() throws Exception;
 
     @Operation(summary = "Listar endereço por ID", description = "Lista o endereço selecionado pelo ID no banco")
     @ApiResponses(
@@ -38,17 +38,17 @@ public interface EnderecoControllerDoc {
     ResponseEntity<EnderecoDTO> getEnderecoById(@Positive(message = "id deve ser maior que zero")
                                                 @PathVariable("idEndereco") Integer idEndereco) throws Exception;
 
-    @Operation(summary = "Listar endereço por ID de pessoa", description = "Lista endereço pelo ID da pessoa cadastrada no banco")
+    @Operation(summary = "Listar endereço por ID do cliente", description = "Lista endereço pelo ID do cliente cadastrada no banco")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Retorna o endereço da pessoa selecionada pelo ID"),
+                    @ApiResponse(responseCode = "200", description = "Retorna o endereço do cliente selecionada pelo ID"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @GetMapping("/{idPessoa}/pessoa")
-    ResponseEntity<List<Endereco>> listarEnderecosByIdPessoa(@Positive(message = "id deve ser maior que zero")
-                                                             @PathVariable("idPessoa") Integer idPessoa) throws Exception;
+    @GetMapping("/cliente/{idCliente}")
+    ResponseEntity<List<EnderecoDTO>> listarEnderecoByIdCliente(@Positive(message = "id deve ser maior que zero")
+                                                             @PathVariable("idCliente") Integer idCliente) throws Exception;
 
     @Operation(summary = "Criar um novo endereço", description = "Cria um novo endereço informando a pessoa destinada pelo ID no banco")
     @ApiResponses(
@@ -58,9 +58,9 @@ public interface EnderecoControllerDoc {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping("/{idPessoa}")
+    @PostMapping("/{idCliente}")
     ResponseEntity<EnderecoDTO> create(@Positive(message = "id deve ser maior que zero")
-                                       @PathVariable("idPessoa") Integer idPessoa,
+                                       @PathVariable("idPessoa") Integer idCliente,
                                        @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception;
 
     @Operation(summary = "Atualizar endereço por ID", description = "Atualiza o endereço selecionado pelo ID")

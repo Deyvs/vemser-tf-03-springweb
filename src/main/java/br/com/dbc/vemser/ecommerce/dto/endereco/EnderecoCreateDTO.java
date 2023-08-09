@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class EnderecoCreateDTO {
 
-    @NotNull(message = "O id da pessoa não pode ser nulo")
+//    @NotNull(message = "O id da pessoa não pode ser nulo")
     @Schema(description = "ID da pessoa associada ao endereço", required = true)
     private Integer idCliente;
 
@@ -44,8 +44,9 @@ public class EnderecoCreateDTO {
     @Schema(description = "Cidade do endereço", required = true, example = "SC")
     private String estado;
 
-    @NotNull(message = "O país não pode ser nulo")
-    @Schema(description = "Cidade do endereço", required = true, example = "Brasil")
-    private String pais;
+    @NotBlank(message = "O Bairro não pode ser vazio ou nulo")
+    @Size(max = 50, message = "O Bairro deve conter no máximo 50 caracteres")
+    @Schema(description = "Bairro do endereço", required = true, example = "Bairro Qualquer")
+    private String bairro;
 
 }

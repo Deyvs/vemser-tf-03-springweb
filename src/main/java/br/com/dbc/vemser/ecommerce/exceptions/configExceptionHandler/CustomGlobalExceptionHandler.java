@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.ecommerce.exceptions.configExceptionHandler;
 
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
