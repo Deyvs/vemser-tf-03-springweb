@@ -44,13 +44,6 @@ public class EnderecoCreateDTO {
     @Schema(description = "Cidade do endereço", required = true, example = "SC")
     private String estado;
 
-    @NotNull(message = "O país não pode ser nulo")
-    @Schema(description = "Cidade do endereço", required = true, example = "Brasil")
-    private String pais;
-
-    @NotNull
-    private String tipoEndereco;
-
     @NotNull
     private String bairro;
 

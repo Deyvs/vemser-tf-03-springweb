@@ -84,6 +84,7 @@ public class EnderecoService {
 
     public EnderecoDTO converterByEnderecoDTO(Endereco endereco) {
         EnderecoDTO enderecoDTO = new EnderecoDTO();
+
         enderecoDTO.setIdEndereco(endereco.getIdEndereco());
         enderecoDTO.setIdCliente(endereco.getIdCliente());
         enderecoDTO.setNumero(endereco.getNumero());
@@ -92,10 +93,7 @@ public class EnderecoService {
         enderecoDTO.setCep(endereco.getCep());
         enderecoDTO.setCidade(endereco.getCidade());
         enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setPais(endereco.getPais());
         enderecoDTO.setLogradouro(endereco.getLogradouro());
-        enderecoDTO.setPais(endereco.getPais());
-        enderecoDTO.setTipoEndereco(endereco.getTipoEndereco());
         enderecoDTO.setBairro(endereco.getBairro());
 
         return enderecoDTO;
@@ -104,14 +102,12 @@ public class EnderecoService {
     public Endereco converterByEndereco(EnderecoCreateDTO enderecoCreateDTO) {
         Endereco entity = objectMapper.convertValue(enderecoCreateDTO, Endereco.class);
         entity.setNumero(enderecoCreateDTO.getNumero());
-        entity.setPais(enderecoCreateDTO.getPais());
         entity.setLogradouro(enderecoCreateDTO.getLogradouro());
         entity.setComplemento(enderecoCreateDTO.getComplemento());
         entity.setCep(enderecoCreateDTO.getCep());
         entity.setCidade(enderecoCreateDTO.getCidade());
         entity.setEstado(enderecoCreateDTO.getEstado());
         entity.setIdCliente(enderecoCreateDTO.getIdCliente());
-        entity.setTipoEndereco(enderecoCreateDTO.getTipoEndereco());
         entity.setBairro(enderecoCreateDTO.getBairro());
 
         return entity;
