@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.ecommerce.controller;
 
+import br.com.dbc.vemser.ecommerce.doc.PedidoControllerDoc;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
 import br.com.dbc.vemser.ecommerce.service.PedidoService;
@@ -18,13 +19,13 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/pedido")
-public class PedidoController {
+public class PedidoController implements PedidoControllerDoc {
 
     private final PedidoService pedidoService;
     private final PedidoXProdutoService pedidoXProdutoService;
 
     @GetMapping
-    public ResponseEntity<List<PedidoDTO>> listar() throws Exception{
+    public ResponseEntity<List<PedidoDTO>> listar() throws Exception {
         return new ResponseEntity<>(pedidoService.listar(),HttpStatus.OK);
     }
 //    @PutMapping("/{idPedido}/{idProduto}")
@@ -34,12 +35,12 @@ public class PedidoController {
 //    }
     @PostMapping("/{idPessoa}")
     public ResponseEntity<PedidoDTO> criarPedido(@PathVariable ("idPessoa") @Positive Integer idPessoa,
-                                                 @RequestBody @Valid PedidoCreateDTO idPedido) throws Exception{
+                                                 @RequestBody @Valid PedidoCreateDTO idPedido) throws Exception {
         return new ResponseEntity<>(pedidoService.criarPedido(idPessoa,idPedido), HttpStatus.OK);
     }
 
     @DeleteMapping("/{idPedido}")
-    public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
+    public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception {
 
          pedidoService.deletePedido(idPedido);
          return ResponseEntity.ok().build();

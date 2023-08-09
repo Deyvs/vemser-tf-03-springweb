@@ -23,7 +23,7 @@ public interface PedidoControllerDoc {
             }
     )
     @GetMapping
-    ResponseEntity<List<PedidoDTO>> listar();
+    ResponseEntity<List<PedidoDTO>> listar() throws Exception;
 
     @Operation(summary = "Criar pedido por ID", description = "Cria pedido selecionando a pessoa destinada pelo ID no banco")
     @ApiResponses(
@@ -36,7 +36,7 @@ public interface PedidoControllerDoc {
     @PostMapping("/{idPessoa}")
     ResponseEntity<PedidoDTO> criarPedido(@PathVariable("idPessoa")
                                           @Positive Integer idPessoa,
-                                          @RequestBody @Valid PedidoCreateDTO idPedido);
+                                          @RequestBody @Valid PedidoCreateDTO idPedido) throws Exception;
 
     @Operation(summary = "Criar carrinho informando ID de pedido e ID do protudo selecionado", description = "Adiciona um produto ao pedido informando o ID do pedido e ID do produto que deseja adicionar ao carrinho")
     @ApiResponses(
@@ -48,7 +48,7 @@ public interface PedidoControllerDoc {
     )
     @PostMapping("/{idPedido}/carrinho/{idProduto}")
     ResponseEntity<String> adicionarProdutoAoPedido(@PathVariable Integer idPedido,
-                                                    @PathVariable Integer idProduto);
+                                                    @PathVariable Integer idProduto) throws Exception;
 
     @Operation(summary = "Deletar pedido por ID", description = "Deleta pedido informado pelo ID no banco")
     @ApiResponses(
@@ -60,7 +60,7 @@ public interface PedidoControllerDoc {
     )
     @DeleteMapping("/{idPedido}")
     ResponseEntity<Void> removerPedido(@PathVariable("idPedido")
-                                       @Positive Integer idPedido);
+                                       @Positive Integer idPedido) throws Exception;
 
     @Operation(summary = "Deletar produto de um pedido por ID", description = "Remove o produto do carrinho informando o ID do pedido e ID do produto que deseja remover do banco")
     @ApiResponses(
@@ -72,5 +72,5 @@ public interface PedidoControllerDoc {
     )
     @DeleteMapping("/{idPedido}/carrinho/{idProduto}")
     ResponseEntity<String> removerProdutoDoPedido(@PathVariable Integer idPedido,
-                                                         @PathVariable Integer idProduto);
+                                                         @PathVariable Integer idProduto) throws Exception;
 }
