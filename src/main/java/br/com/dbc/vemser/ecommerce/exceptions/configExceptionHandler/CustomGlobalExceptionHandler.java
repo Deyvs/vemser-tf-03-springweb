@@ -2,6 +2,7 @@ package br.com.dbc.vemser.ecommerce.exceptions.configExceptionHandler;
 
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
+import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,8 +64,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ProdutoNaoEncontradoException.class)
-    public ResponseEntity<Object> handleException(ProdutoNaoEncontradoException exception,
+    @ExceptionHandler(RegraDeNegocioException.class)
+    public ResponseEntity<Object> handleException(RegraDeNegocioException exception,
                                                   HttpServletRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
