@@ -5,7 +5,7 @@ import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Endereco;
 import br.com.dbc.vemser.ecommerce.repository.EnderecoRepository;
-import br.com.dbc.vemser.ecommerce.utilitarias.NotificacaoByEmail;
+import br.com.dbc.vemser.ecommerce.utils.NotificacaoByEmail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.stereotype.Service;

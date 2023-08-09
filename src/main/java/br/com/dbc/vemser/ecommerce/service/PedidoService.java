@@ -2,11 +2,10 @@ package br.com.dbc.vemser.ecommerce.service;
 
 import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoCreateDTO;
-import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoOutputDTO;
+import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Pedido;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
 import br.com.dbc.vemser.ecommerce.repository.PedidoXProdutoRepository;
@@ -14,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,15 +27,15 @@ public class PedidoService {
     private final ClienteService clienteService;
     private final ObjectMapper objectMapper;
 
-    public PedidoOutputDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws BancoDeDadosException, RegraDeNegocioException {
+    public PedidoDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws BancoDeDadosException, RegraDeNegocioException {
 
         ClienteDTO cliente = clienteService.getClienteById(idCliente);
 
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto.getIdProduto());
 
-        PedidoOutputDTO pedidoOutputDTO = objectMapper.convertValue(pedidoRepository.adicionar(
+        PedidoDTO pedidoOutputDTO = objectMapper.convertValue(pedidoRepository.adicionar(
                 new Pedido(null, idCliente, produtoDTO.getValor(),"n"))
-                ,PedidoOutputDTO.class);
+                , PedidoDTO.class);
 
         pedidoXProdutoRepository.adicionarProdutoAoPedido(pedidoOutputDTO.getIdPedido(),idProduto.getIdProduto());
 
@@ -50,11 +48,11 @@ public class PedidoService {
         return pedidoOutputDTO;
     }
 
-    public List<PedidoOutputDTO> listar() throws BancoDeDadosException {
-        List<PedidoOutputDTO>listaOut = new ArrayList<>();
+    public List<PedidoDTO> listar() throws BancoDeDadosException {
+        List<PedidoDTO>listaOut = new ArrayList<>();
 
         for(Pedido p: pedidoRepository.listar()){
-            listaOut.add(objectMapper.convertValue(p,PedidoOutputDTO.class));
+            listaOut.add(objectMapper.convertValue(p, PedidoDTO.class));
         }
         return listaOut;
     }
