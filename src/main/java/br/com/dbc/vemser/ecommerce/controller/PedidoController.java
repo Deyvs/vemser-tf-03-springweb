@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.ecommerce.controller;
 
+import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoOutputDTO;
 import br.com.dbc.vemser.ecommerce.service.PedidoService;
 import br.com.dbc.vemser.ecommerce.service.PedidoXProdutoService;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -31,10 +33,11 @@ public class PedidoController {
 //        return new ResponseEntity<>(pedidoService.atualizarValorPedido(idPedido,idProduto),HttpStatus.OK);
 //    }
     @PostMapping("/{idPessoa}")
-    public ResponseEntity<PedidoOutputDTO> criarPedido(@PathVariable ("idPessoa") @Positive Integer idPessoa) throws Exception{
-
-        return new ResponseEntity<>(pedidoService.criarPedido(idPessoa), HttpStatus.OK);
+    public ResponseEntity<PedidoOutputDTO> criarPedido(@PathVariable ("idPessoa") @Positive Integer idPessoa,
+                                                       @RequestBody @Valid PedidoCreateDTO idPedido) throws Exception{
+        return new ResponseEntity<>(pedidoService.criarPedido(idPessoa,idPedido), HttpStatus.OK);
     }
+  
     @DeleteMapping("/{idPedido}")
     public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
 
@@ -65,16 +68,5 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao remover seu produto do pedido.");
         }
     }
-
-    @DeleteMapping("/{idPedido}")
-    public ResponseEntity<String> removerTodosProdutosDoPedido(@PathVariable Integer idPedido) {
-        try {
-            pedidoXProdutoService.removerTodosProdutosDoPedido(idPedido);
-            return ResponseEntity.ok("Todos os produtos foram removidos do seu pedido com sucesso.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao remover todos os seus produtos do pedido.");
-        }
-    }
-
 
 }
