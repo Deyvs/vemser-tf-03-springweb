@@ -1,7 +1,8 @@
 package br.com.dbc.vemser.ecommerce.controller;
 
+import br.com.dbc.vemser.ecommerce.doc.PedidoControllerDoc;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoCreateDTO;
-import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoOutputDTO;
+import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
 import br.com.dbc.vemser.ecommerce.service.PedidoService;
 import br.com.dbc.vemser.ecommerce.service.PedidoXProdutoService;
 import lombok.AllArgsConstructor;
@@ -14,17 +15,17 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+@Validated
 @AllArgsConstructor
 @RestController
 @RequestMapping("/pedido")
-@Validated
-public class PedidoController {
+public class PedidoController implements PedidoControllerDoc {
 
     private final PedidoService pedidoService;
     private final PedidoXProdutoService pedidoXProdutoService;
 
     @GetMapping
-    public ResponseEntity<List<PedidoOutputDTO>> listar() throws Exception{
+    public ResponseEntity<List<PedidoDTO>> listar() throws Exception {
         return new ResponseEntity<>(pedidoService.listar(),HttpStatus.OK);
     }
 //    @PutMapping("/{idPedido}/{idProduto}")
@@ -33,13 +34,13 @@ public class PedidoController {
 //        return new ResponseEntity<>(pedidoService.atualizarValorPedido(idPedido,idProduto),HttpStatus.OK);
 //    }
     @PostMapping("/{idPessoa}")
-    public ResponseEntity<PedidoOutputDTO> criarPedido(@PathVariable ("idPessoa") @Positive Integer idPessoa,
-                                                       @RequestBody @Valid PedidoCreateDTO idPedido) throws Exception{
+    public ResponseEntity<PedidoDTO> criarPedido(@PathVariable ("idPessoa") @Positive Integer idPessoa,
+                                                 @RequestBody @Valid PedidoCreateDTO idPedido) throws Exception {
         return new ResponseEntity<>(pedidoService.criarPedido(idPessoa,idPedido), HttpStatus.OK);
     }
-  
+
     @DeleteMapping("/{idPedido}")
-    public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
+    public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception {
 
          pedidoService.deletePedido(idPedido);
          return ResponseEntity.ok().build();

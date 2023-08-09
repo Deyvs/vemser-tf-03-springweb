@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.ecommerce.utilitarias;
+package br.com.dbc.vemser.ecommerce.utils;
 
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoCreateDTO;

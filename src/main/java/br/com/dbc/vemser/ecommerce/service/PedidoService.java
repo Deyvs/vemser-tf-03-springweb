@@ -2,15 +2,17 @@ package br.com.dbc.vemser.ecommerce.service;
 
 import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoCreateDTO;
-import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoOutputDTO;
+import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Pedido;
-import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
+import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
 import br.com.dbc.vemser.ecommerce.repository.PedidoXProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,19 +27,15 @@ public class PedidoService {
     private final ClienteService clienteService;
     private final ObjectMapper objectMapper;
 
-    public PedidoOutputDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws Exception {
+    public PedidoDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws BancoDeDadosException, RegraDeNegocioException {
 
         ClienteDTO cliente = clienteService.getClienteById(idCliente);
-        if(cliente == null ){
-            throw new ProdutoNaoEncontradoException("Cliente não encontrado");
-        }
+
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto.getIdProduto());
-        if(produtoDTO == null ){
-            throw new ProdutoNaoEncontradoException("Produto não encontrado");
-        }
-        PedidoOutputDTO pedidoOutputDTO = objectMapper.convertValue(pedidoRepository.adicionar(
+
+        PedidoDTO pedidoOutputDTO = objectMapper.convertValue(pedidoRepository.adicionar(
                 new Pedido(null, idCliente, produtoDTO.getValor(),"n"))
-                ,PedidoOutputDTO.class);
+                , PedidoDTO.class);
 
         pedidoXProdutoRepository.adicionarProdutoAoPedido(pedidoOutputDTO.getIdPedido(),idProduto.getIdProduto());
 
@@ -50,11 +48,11 @@ public class PedidoService {
         return pedidoOutputDTO;
     }
 
-    public List<PedidoOutputDTO> listar() throws Exception{
-        List<PedidoOutputDTO>listaOut = new ArrayList<>();
+    public List<PedidoDTO> listar() throws BancoDeDadosException {
+        List<PedidoDTO>listaOut = new ArrayList<>();
 
         for(Pedido p: pedidoRepository.listar()){
-            listaOut.add(objectMapper.convertValue(p,PedidoOutputDTO.class));
+            listaOut.add(objectMapper.convertValue(p, PedidoDTO.class));
         }
         return listaOut;
     }
@@ -94,12 +92,13 @@ public class PedidoService {
 
         Pedido pedidoAchado = pedidoRepository.getPedidoPorId(idPedido);
 
+
         if (pedidoAchado == null) {
-            throw new ProdutoNaoEncontradoException("Pedido não encontrado");
+            throw new RegraDeNegocioException("Pedido não encontrado");
         }
 
         if (pedidoAchado.getStatusPedido().equalsIgnoreCase("S")) {
-            throw new ProdutoNaoEncontradoException("Pedido finalizado");
+            throw new RegraDeNegocioException("Pedido finalizado");
         }
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto);
 
@@ -130,9 +129,8 @@ public class PedidoService {
         return false;
     }
 
-
-
     public void deletePedido(Integer idPedido) throws Exception{
+
         pedidoRepository.remover(idPedido);
     }
 

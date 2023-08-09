@@ -190,6 +190,43 @@ public class ProdutoRepository {
 
     }
 
+    public void deletar(Integer idProduto) throws BancoDeDadosException {
+
+        Connection con = null;
+
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            StringBuilder sql = new StringBuilder();
+
+
+            sql.append("DELETE FROM PRODUTO");
+            sql.append(" WHERE ID_PRODUTO = ?");
+
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
+
+            stmt.setInt(1, idProduto);
+
+            // Executa-se a consulta
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
 
 }
 

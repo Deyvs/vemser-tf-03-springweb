@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.ecommerce.controller;
 
+import br.com.dbc.vemser.ecommerce.doc.ClienteControllerDoc;
 import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.ecommerce.service.ClienteService;
@@ -11,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@AllArgsConstructor
 @Validated
+@AllArgsConstructor
+@RestController
 @RequestMapping("/cliente")
-public class ClienteController {
+public class ClienteController implements ClienteControllerDoc {
 
     private final ClienteService clienteService;
 
