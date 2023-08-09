@@ -2,6 +2,8 @@ package br.com.dbc.vemser.ecommerce.doc;
 
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
+import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,7 +25,7 @@ public interface ProdutoControllerDoc {
             }
     )
     @GetMapping
-    ResponseEntity<List<ProdutoDTO>> listarProdutos();
+    ResponseEntity<List<ProdutoDTO>> listarProdutos() throws BancoDeDadosException;
 
     @Operation(summary = "Listar produto por ID", description = "Lista produto por ID no banco")
     @ApiResponses(
@@ -35,7 +37,7 @@ public interface ProdutoControllerDoc {
     )
     @GetMapping("/{idProduto}")
     ResponseEntity<ProdutoDTO> buscarProduto(@Positive(message = "O número precisa ser positivo.")
-                                             @PathVariable Integer idProduto);
+                                             @PathVariable Integer idProduto) throws BancoDeDadosException, RegraDeNegocioException;
 
     @Operation(summary = "Criar novo produto", description = "Cria e salva o novo produto no banco")
     @ApiResponses(
@@ -46,7 +48,7 @@ public interface ProdutoControllerDoc {
             }
     )
     @PostMapping
-    ResponseEntity<ProdutoDTO> salvarProduto(@Valid @RequestBody ProdutoCreateDTO produtoCreateDTO);
+    ResponseEntity<ProdutoDTO> salvarProduto(@Valid @RequestBody ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException;
 
     @Operation(summary = "Atualizar produto por ID", description = "Atualiza produto informando o ID no banco")
     @ApiResponses(
@@ -59,7 +61,7 @@ public interface ProdutoControllerDoc {
     @PutMapping("/{idProduto}")
     ResponseEntity<ProdutoDTO> atualizarProduto(@Positive(message = "O número precisa ser positivo.")
                                                 @PathVariable Integer idProduto,
-                                                @Valid @RequestBody ProdutoCreateDTO produtoCreateDTO);
+                                                @Valid @RequestBody ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException;
 
     @Operation(summary = "Deletar produto por ID", description = "Deleta produto informando o ID no banco")
     @ApiResponses(
@@ -70,5 +72,5 @@ public interface ProdutoControllerDoc {
             }
     )
     @DeleteMapping("/{idProduto}")
-    ResponseEntity<Void> delete(@PathVariable Integer idProduto);
+    ResponseEntity<Void> delete(@PathVariable Integer idProduto) throws RegraDeNegocioException, BancoDeDadosException;
 }
