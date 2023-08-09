@@ -6,6 +6,7 @@ import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Pedido;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
 import br.com.dbc.vemser.ecommerce.repository.PedidoXProdutoRepository;
@@ -57,12 +58,12 @@ public class PedidoService {
         return listaOut;
     }
 
-    public PedidoOutputDTO adicionarProdutoaoPedido(Integer idPedido, Integer idProduto) throws Exception{
+    public PedidoDTO adicionarProdutoaoPedido(Integer idPedido, Integer idProduto) throws Exception{
         Boolean status = atualizarValorPedido("i",idPedido,idProduto);
         if(status){
             pedidoXProdutoRepository.adicionarProdutoAoPedido(idPedido,idProduto);
         }
-        PedidoOutputDTO pedidoOutputDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoOutputDTO.class);
+        PedidoDTO pedidoOutputDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoDTO.class);
 
         List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoOutputDTO.getIdPedido())
                 .stream()
@@ -72,12 +73,12 @@ public class PedidoService {
 
         return pedidoOutputDTO;
     }
-    public PedidoOutputDTO RemoverProdutoDoPedido(Integer idPedido, Integer idProduto) throws Exception{
+    public PedidoDTO RemoverProdutoDoPedido(Integer idPedido, Integer idProduto) throws Exception{
         Boolean status = atualizarValorPedido("d",idPedido,idProduto);
         if(status){
             pedidoXProdutoRepository.removerProdutoDoPedido(idPedido,idProduto);
         }
-        PedidoOutputDTO pedidoOutputDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoOutputDTO.class);
+        PedidoDTO pedidoOutputDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoDTO.class);
 
         List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoOutputDTO.getIdPedido())
                 .stream()
