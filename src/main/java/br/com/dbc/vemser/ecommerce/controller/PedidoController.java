@@ -33,14 +33,14 @@ public class PedidoController {
     @PostMapping("/{idPessoa}")
     public ResponseEntity<PedidoOutputDTO> criarPedido(@PathVariable ("idPessoa") @Positive Integer idPessoa) throws Exception{
 
-        return new ResponseEntity<>(pedidoService.adicionar(idPessoa), HttpStatus.OK);
+        return new ResponseEntity<>(pedidoService.criarPedido(idPessoa), HttpStatus.OK);
     }
-    @DeleteMapping("/{idPedido}")
-    public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
-
-         pedidoService.deletePedido(idPedido);
-         return ResponseEntity.ok().build();
-    }
+//    @DeleteMapping("/{idPedido}")
+//    public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
+//
+//         pedidoService.deletePedido(idPedido);
+//         return ResponseEntity.ok().build();
+//    }
 
     // Implementação dos métodos da classe PedidoXProdutoService
 
