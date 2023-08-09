@@ -6,7 +6,6 @@ import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Pedido;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
 import br.com.dbc.vemser.ecommerce.repository.PedidoXProdutoRepository;
@@ -28,7 +27,7 @@ public class PedidoService {
     private final ClienteService clienteService;
     private final ObjectMapper objectMapper;
 
-    public PedidoDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws BancoDeDadosException, RegraDeNegocioException {
+    public PedidoDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws Exception {
 
         ClienteDTO cliente = clienteService.getClienteById(idCliente);
 
@@ -53,7 +52,15 @@ public class PedidoService {
         List<PedidoDTO>listaOut = new ArrayList<>();
 
         for(Pedido p: pedidoRepository.listar()){
-            listaOut.add(objectMapper.convertValue(p, PedidoDTO.class));
+            PedidoDTO pedidoDTO = objectMapper.convertValue(p,PedidoDTO.class);
+
+            List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoDTO.getIdPedido())
+                    .stream()
+                    .map(produto -> objectMapper.convertValue(produto,ProdutoDTO.class)).collect(Collectors.toList());
+
+            pedidoDTO.setProdutos(produtosPedido);
+            listaOut.add(pedidoDTO);
+
         }
         return listaOut;
     }
@@ -63,30 +70,33 @@ public class PedidoService {
         if(status){
             pedidoXProdutoRepository.adicionarProdutoAoPedido(idPedido,idProduto);
         }
-        PedidoDTO pedidoOutputDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoDTO.class);
 
-        List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoOutputDTO.getIdPedido())
+        PedidoDTO pedidoDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoDTO.class);
+
+
+        List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoDTO.getIdPedido())
                 .stream()
                 .map(produto -> objectMapper.convertValue(produto,ProdutoDTO.class)).collect(Collectors.toList());
 
-        pedidoOutputDTO.setProdutos(produtosPedido);
+        pedidoDTO.setProdutos(produtosPedido);
 
-        return pedidoOutputDTO;
+        return pedidoDTO;
     }
     public PedidoDTO RemoverProdutoDoPedido(Integer idPedido, Integer idProduto) throws Exception{
         Boolean status = atualizarValorPedido("d",idPedido,idProduto);
         if(status){
             pedidoXProdutoRepository.removerProdutoDoPedido(idPedido,idProduto);
         }
-        PedidoDTO pedidoOutputDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoDTO.class);
 
-        List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoOutputDTO.getIdPedido())
+        PedidoDTO pedidoDTO =objectMapper.convertValue( pedidoRepository.getPedidoPorId(idPedido),PedidoDTO.class);
+
+        List<ProdutoDTO> produtosPedido = pedidoXProdutoRepository.listarProdutosDoPedido(pedidoDTO.getIdPedido())
                 .stream()
                 .map(produto -> objectMapper.convertValue(produto,ProdutoDTO.class)).collect(Collectors.toList());
 
-        pedidoOutputDTO.setProdutos(produtosPedido);
+        pedidoDTO.setProdutos(produtosPedido);
 
-        return pedidoOutputDTO;
+        return pedidoDTO;
     }
 
     public Boolean atualizarValorPedido(String flag,Integer idPedido,Integer idProduto) throws Exception {
@@ -104,7 +114,7 @@ public class PedidoService {
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto);
 
         if(produtoDTO == null){
-            throw new ProdutoNaoEncontradoException("Produto não encontrado");
+            throw new RegraDeNegocioException("Produto não encontrado");
         }
 
         if(flag.equalsIgnoreCase("i")){
@@ -137,149 +147,3 @@ public class PedidoService {
 
 }
 
-//    private PedidoRepository pedidoRepository;
-//
-//    public PedidoService() {
-//        pedidoRepository = new PedidoRepository();
-//    }
-//
-//    public void imprimirTodosOsPedidos() {
-//        try {
-//            for (Pedido pedido : pedidoRepository.listar()) {
-//                pedido.imprimir();
-//            }
-//
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public void imprimirPedidosDoCliente(int idCliente) {
-//        try {
-//            for (Pedido pedido : pedidoRepository.listarPedidosDoCliente(idCliente)) {
-//                pedido.imprimir();
-//            }
-//
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public void imprimirPedidosNaoPagosDoCliente(int idCliente) {
-//        try {
-//            for (Pedido pedido : pedidoRepository.listarPedidosNaoPagosDoCliente(idCliente)) {
-//                pedido.imprimir();
-//            }
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public List<Pedido> listarPedidosDoCliente(int idCliente) {
-//        try {
-//            return pedidoRepository.listarPedidosDoCliente(idCliente);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
-//    public Pedido adicionar(Pedido pedido) {
-//        try {
-//            return pedidoRepository.adicionar(pedido);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
-//    public void remover(Pedido pedido) {
-//        try {
-//            PedidoXProdutoService pedidoXProdutoService = new PedidoXProdutoService();
-//            pedidoXProdutoService.removerTodosProdutosDoPedido(pedido.getId());
-//            pedidoRepository.remover(pedido.getId());
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//
-//    public void editarParaAdicionarProdutos(Pedido pedido, Produto produto) {
-//        try {
-//            PedidoXProdutoService pedidoXProdutoService = new PedidoXProdutoService();
-//            pedido.adicionarProduto(produto);
-//            pedidoRepository.editarValorDoPedido(pedido);
-//            pedidoXProdutoService.adicionarProdutoAoPedido(pedido.getId(), produto.getId());
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public void editarParaRemoverProdutos(Pedido pedido, Produto produto) {
-//        try {
-//            PedidoXProdutoService pedidoXProdutoService = new PedidoXProdutoService();
-//            pedido.removerProduto(produto);
-//            pedidoRepository.editarValorDoPedido(pedido);
-//            pedidoXProdutoService.removerProdutoDoPedido(pedido.getId(), produto.getId());
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public Pedido buscarPedido(int idPedido) {
-//        try {
-//            Pedido pedido = pedidoRepository.buscarPedido(idPedido);
-//            return pedido;
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
-//    public void editarPedidoParaEstarPago(Pedido pedido)  {
-//        try {
-//            pedido.setPago("S");
-//            pedidoRepository.editarPedidoParaEstarPago(pedido);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public Pedido buscarPedidoDoCliente(int idPedido, int idCliente) {
-//        try {
-//            Pedido pedido = pedidoRepository.buscarPedidoDoCliente(idPedido, idCliente);
-//            return pedido;
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
-//    public Pedido buscarPedidoNaoPagoDoCliente(int idPedido, int idCliente) {
-//        try {
-//            for (Pedido pedido: pedidoRepository.listarPedidosNaoPagosDoCliente(idCliente)) {
-//                if (pedido.getId() == idPedido) {
-//                    return pedido;
-//                }
-//            }
-//            return null;
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
-//    public boolean verificaSeClientePossuiPedidosParaPagar(int idCliente) {
-//        try {
-//            List<Pedido> pedidos = pedidoRepository.listarPedidosNaoPagosDoCliente(idCliente);
-//            for (Pedido pedido: pedidos) {
-//                if (pedido.getPago().equals("N")) {
-//                        return true;
-//                }
-//            }
-//            return false;
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }

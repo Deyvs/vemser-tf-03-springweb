@@ -36,7 +36,7 @@ public class ClienteService {
         return clienteDTOS;
     }
 
-    public ClienteDTO getClienteById(Integer idCliente) throws BancoDeDadosException, RegraDeNegocioException {
+    public ClienteDTO getClienteById(Integer idCliente) throws Exception {
 
         Cliente cliente = clienteRepository.getClienteById(idCliente);
 
@@ -45,7 +45,7 @@ public class ClienteService {
         return converterByClienteDTO(cliente);
     }
 
-    public ClienteDTO create(ClienteCreateDTO clienteCreateDTO) throws BancoDeDadosException, MessagingException {
+    public ClienteDTO create(ClienteCreateDTO clienteCreateDTO) throws Exception {
         Cliente entity = converterByCliente(clienteCreateDTO);
         Cliente cliente = clienteRepository.create(entity);
         ClienteDTO clienteDTO = converterByClienteDTO(cliente);
@@ -54,7 +54,7 @@ public class ClienteService {
         return clienteDTO;
     }
 
-    public ClienteDTO update(Integer idCliente, ClienteCreateDTO clienteCreateDTO) throws BancoDeDadosException, MessagingException, RegraDeNegocioException {
+    public ClienteDTO update(Integer idCliente, ClienteCreateDTO clienteCreateDTO) throws Exception {
 
         getClienteById(idCliente);
 
@@ -66,7 +66,7 @@ public class ClienteService {
         return clienteDTO;
     }
 
-    public void delete(Integer idCliente) throws BancoDeDadosException, RegraDeNegocioException, MessagingException {
+    public void delete(Integer idCliente) throws Exception {
         ClienteDTO clienteDTO = getClienteById(idCliente);
         notificacaoByEmail.notificarByEmailCliente(clienteDTO, "deletado");
 

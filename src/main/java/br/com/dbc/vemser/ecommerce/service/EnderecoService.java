@@ -4,16 +4,12 @@ import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Endereco;
-import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.ecommerce.exceptions.EscolherOpcaoException;
 import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.EnderecoRepository;
 import br.com.dbc.vemser.ecommerce.utils.NotificacaoByEmail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-
-import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +23,7 @@ public class EnderecoService {
     private final NotificacaoByEmail notificacaoByEmail;
     private final ObjectMapper objectMapper;
 
-    public List<EnderecoDTO> listarEnderecos() throws BancoDeDadosException {
+    public List<EnderecoDTO> listarEnderecos() throws Exception {
         List<Endereco> enderecos = enderecoRepository.listarEnderecos();
         List<EnderecoDTO> enderecoDTOS = new ArrayList<>();
 
@@ -38,18 +34,16 @@ public class EnderecoService {
 
     }
 
-    public EnderecoDTO getEnderecoById(Integer idEndereco) throws BancoDeDadosException {
+    public EnderecoDTO getEnderecoById(Integer idEndereco) throws Exception {
         Endereco endereco = enderecoRepository.getEnderecoById(idEndereco);
         return converterByEnderecoDTO(endereco);
     }
-
-    public List<EnderecoDTO> listarEnderecosByIdPessoa(Integer idPessoa) throws BancoDeDadosException {
-
-        return enderecoRepository.listarEnderecoByIdPessoa(idPessoa)
+    public List<EnderecoDTO> listarEnderecoByIdCliente(Integer idCliente) throws Exception {
+        return enderecoRepository.listarEnderecoByIdCliente(idCliente)
                 .stream().map(this::converterByEnderecoDTO).collect(Collectors.toList());
     }
 
-    public EnderecoDTO create(Integer idCliente, EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException, EscolherOpcaoException, MessagingException {
+    public EnderecoDTO create(Integer idCliente, EnderecoCreateDTO enderecoCreateDTO) throws Exception {
 //        ClienteDTO clienteDTO = clienteService.getClienteById(idCliente);
         Endereco entity = converterByEndereco(enderecoCreateDTO);
 
@@ -60,7 +54,12 @@ public class EnderecoService {
         return enderecoDTO;
     }
 
-    public EnderecoDTO update(Integer idEndereco, EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException, MessagingException {
+    public EnderecoDTO update(Integer idEndereco, EnderecoCreateDTO enderecoCreateDTO) throws Exception {
+        Endereco enderecoExiste = enderecoRepository.getEnderecoById(idEndereco);
+        if(enderecoExiste == null) {
+            throw new RegraDeNegocioException("Endereço não encontrado");
+        }
+        enderecoCreateDTO.setIdCliente(enderecoExiste.getIdCliente());
         Endereco entity = converterByEndereco(enderecoCreateDTO);
         entity.setIdEndereco(idEndereco);
 
@@ -92,10 +91,6 @@ public class EnderecoService {
         enderecoDTO.setCep(endereco.getCep());
         enderecoDTO.setCidade(endereco.getCidade());
         enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setPais(endereco.getPais());
-        enderecoDTO.setLogradouro(endereco.getLogradouro());
-        enderecoDTO.setPais(endereco.getPais());
-        enderecoDTO.setTipoEndereco(endereco.getTipoEndereco());
         enderecoDTO.setBairro(endereco.getBairro());
 
         return enderecoDTO;
@@ -104,14 +99,12 @@ public class EnderecoService {
     public Endereco converterByEndereco(EnderecoCreateDTO enderecoCreateDTO) {
         Endereco entity = objectMapper.convertValue(enderecoCreateDTO, Endereco.class);
         entity.setNumero(enderecoCreateDTO.getNumero());
-        entity.setPais(enderecoCreateDTO.getPais());
         entity.setLogradouro(enderecoCreateDTO.getLogradouro());
         entity.setComplemento(enderecoCreateDTO.getComplemento());
         entity.setCep(enderecoCreateDTO.getCep());
         entity.setCidade(enderecoCreateDTO.getCidade());
         entity.setEstado(enderecoCreateDTO.getEstado());
         entity.setIdCliente(enderecoCreateDTO.getIdCliente());
-        entity.setTipoEndereco(enderecoCreateDTO.getTipoEndereco());
         entity.setBairro(enderecoCreateDTO.getBairro());
 
         return entity;

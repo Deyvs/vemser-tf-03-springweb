@@ -3,7 +3,6 @@ package br.com.dbc.vemser.ecommerce.controller;
 import br.com.dbc.vemser.ecommerce.doc.EnderecoControllerDoc;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoDTO;
-import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.service.EnderecoService;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -24,29 +23,25 @@ public class EnderecoController implements EnderecoControllerDoc {
     private final EnderecoService enderecoService;
 
     @GetMapping
-    public ResponseEntity<List<EnderecoDTO>> listarEnderecos() throws BancoDeDadosException {
+    public ResponseEntity<List<EnderecoDTO>> listarEnderecos() throws Exception {
         return new ResponseEntity<>(enderecoService.listarEnderecos(), HttpStatus.OK);
     }
 
     @GetMapping("/{idEndereco}")
     public ResponseEntity<EnderecoDTO> getEnderecoById(@Positive(message = "id deve ser maior que zero")
                                                            @PathVariable("idEndereco")
-                                                           Integer idEndereco) throws BancoDeDadosException {
+                                                           Integer idEndereco) throws Exception {
         return new ResponseEntity<>(enderecoService.getEnderecoById(idEndereco), HttpStatus.OK);
     }
-    @GetMapping("/{idPessoa}/pessoa")
-    public ResponseEntity<List<EnderecoDTO>> listarEnderecosByIdPessoa(
-            @Positive(message = "id deve ser maior que zero")
-            @PathVariable("idPessoa") Integer idPessoa) throws BancoDeDadosException {
-
-        return new ResponseEntity<>(enderecoService.listarEnderecosByIdPessoa(idPessoa), HttpStatus.OK);
+    @GetMapping("/cliente/{idCliente}")
+    public ResponseEntity<List<EnderecoDTO>> listarEnderecoByIdCliente(@Positive(message = "id deve ser maior que zero") @PathVariable("idCliente") Integer idCliente) throws Exception {
+        return new ResponseEntity<>(enderecoService.listarEnderecoByIdCliente(idCliente), HttpStatus.OK);
     }
 
-    @PostMapping("/{idPessoa}")
-    public ResponseEntity<EnderecoDTO> create(@Positive(message = "id deve ser maior que zero")
-                                                  @PathVariable("idPessoa") Integer idPessoa,
+    @PostMapping("/{idCliente}")
+    public ResponseEntity<EnderecoDTO> create(@Positive(message = "id deve ser maior que zero") @PathVariable("idCliente") Integer idCliente,
                                               @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception {
-        return new ResponseEntity<EnderecoDTO>(enderecoService.create(idPessoa , enderecoCreateDTO), HttpStatus.OK);
+        return new ResponseEntity<EnderecoDTO>(enderecoService.create(idCliente , enderecoCreateDTO), HttpStatus.OK);
     }
 
     @PutMapping("/{idEndereco}")

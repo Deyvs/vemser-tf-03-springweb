@@ -28,6 +28,7 @@ public class NotificacaoByEmail {
 
         dados.put("status", response);
         emailService.sendTemplateEmail(dados, clienteDTO.getEmail());
+        System.out.println(clienteDTO.getEmail());
     }
 
     public void notificarByEmailEndereco(ClienteDTO clienteDTO, String statusDeNotificacao) throws MessagingException {
