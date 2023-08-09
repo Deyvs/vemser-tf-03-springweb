@@ -6,7 +6,7 @@ import br.com.dbc.vemser.ecommerce.entity.Produto;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.ProdutoNaoEncontradoException;
 import br.com.dbc.vemser.ecommerce.repository.ProdutoRepository;
-import br.com.dbc.vemser.ecommerce.utilitarias.ConverterProdutoParaDTOutil;
+import br.com.dbc.vemser.ecommerce.utils.ConverterProdutoParaDTOutil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
