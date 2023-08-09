@@ -141,7 +141,7 @@ public class PedidoService {
     }
 
     public void deletePedido(Integer idPedido) throws Exception{
-
+        pedidoXProdutoRepository.removerTodosProdutosDoPedido(idPedido);
         pedidoRepository.remover(idPedido);
     }
 
