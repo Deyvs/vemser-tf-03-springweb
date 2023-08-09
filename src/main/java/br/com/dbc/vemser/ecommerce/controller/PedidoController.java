@@ -33,7 +33,7 @@ public class PedidoController {
     @PostMapping("/{idPessoa}")
     public ResponseEntity<PedidoOutputDTO> criarPedido(@PathVariable ("idPessoa") @Positive Integer idPessoa) throws Exception{
 
-        return new ResponseEntity<>(pedidoService.adicionar(idPessoa), HttpStatus.OK);
+        return new ResponseEntity<>(pedidoService.criarPedido(idPessoa), HttpStatus.OK);
     }
     @DeleteMapping("/{idPedido}")
     public ResponseEntity<Void> removerPedido(@PathVariable("idPedido") @Positive Integer idPedido) throws Exception{
@@ -54,7 +54,6 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao adicionar seu produto ao pedido.");
         }
     }
-
 
     @DeleteMapping("/{idPedido}/carrinho/{idProduto}")
     public ResponseEntity<String> removerProdutoDoPedido(@PathVariable Integer idPedido,
