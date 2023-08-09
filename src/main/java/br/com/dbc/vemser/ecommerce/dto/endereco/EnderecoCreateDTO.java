@@ -19,10 +19,6 @@ public class EnderecoCreateDTO {
     @Schema(description = "ID da pessoa associada ao endereço", required = true)
     private Integer idCliente;
 
-    @NotNull(message = "O tipo de endereço não pode ser nulo")
-    @Schema(description = "Tipo de endereço", required = true, example = "RESIDENCIAL")
-    private TipoEndereco tipoEndereco;
-
     @NotBlank
     @Size(max = 250, message = "Não pode conter mais de 250 caracteres")
     @Schema(description = "Logradouro do endereço", required = true, example = "Rua A")
