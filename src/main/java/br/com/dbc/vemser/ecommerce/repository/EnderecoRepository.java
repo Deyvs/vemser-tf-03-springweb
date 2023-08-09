@@ -2,6 +2,7 @@ package br.com.dbc.vemser.ecommerce.repository;
 
 import br.com.dbc.vemser.ecommerce.entity.Endereco;
 import br.com.dbc.vemser.ecommerce.entity.enums.TipoEndereco;
+import br.com.dbc.vemser.ecommerce.exceptions.EscolherOpcaoException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -25,33 +26,33 @@ public class EnderecoRepository {
         return listaEnderecos;
     };
 
-    public Endereco getEnderecoById(Integer idEndereco) throws RegraDeNegocioException {
+    public Endereco getEnderecoById(Integer idEndereco) throws EscolherOpcaoException {
         Endereco enderecoRecuperado = listarEnderecos().stream()
                 .filter(endereco -> endereco.getIdEndereco().equals(idEndereco))
                 .findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Endereco não encontrado!"));
+                .orElseThrow(() -> new EscolherOpcaoException("Endereco não encontrado!"));
         return enderecoRecuperado;
     }
 
-    public List<Endereco> listarEnderecoByIdPessoa(Integer idPessoa) {
+    public List<Endereco> listarEnderecoByIdPessoa(Integer idCliente) {
         List<Endereco> enderecos = new ArrayList<>();
         for(Endereco endereco : listarEnderecos()) {
-            if(idPessoa == endereco.getIdPessoa()) {
+            if(idCliente == endereco.getIdCliente()) {
                 enderecos.add(endereco);
             }
         }
         return enderecos;
     }
 
-    public Endereco create(Integer idPessoa, Endereco endereco) throws RegraDeNegocioException {
+    public Endereco create(Integer idCliente, Endereco endereco) throws EscolherOpcaoException {
         endereco.setIdEndereco(COUNTER.incrementAndGet());
-        endereco.setIdPessoa(idPessoa);
+        endereco.setIdCliente(idCliente);
         listaEnderecos.add(endereco);
         return endereco;
     }
 
 
-    public Endereco update(Integer idEndereco, Endereco enderecoByUpdate) throws RegraDeNegocioException {
+    public Endereco update(Integer idEndereco, Endereco enderecoByUpdate) throws EscolherOpcaoException {
         Endereco endereco = getEnderecoById(idEndereco);
         endereco.setTipoEndereco(enderecoByUpdate.getTipoEndereco());
         endereco.setNumero(enderecoByUpdate.getNumero());
