@@ -20,6 +20,7 @@ public interface EnderecoControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna lista de endereços"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "Página não encontrada"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -31,6 +32,7 @@ public interface EnderecoControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna endereço solicitado pelo ID"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -43,6 +45,7 @@ public interface EnderecoControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna o endereço da pessoa selecionada pelo ID"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -54,7 +57,9 @@ public interface EnderecoControllerDoc {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna o novo endereço cadastrado"),
+                    @ApiResponse(responseCode = "201", description = "Retorna o endereço criado"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -68,6 +73,7 @@ public interface EnderecoControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna o endereço ataualizado no banco"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -80,7 +86,9 @@ public interface EnderecoControllerDoc {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna Ok"),
+                    @ApiResponse(responseCode = "204", description = "Retorna endereço deletado"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )

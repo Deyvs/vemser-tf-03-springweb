@@ -17,6 +17,7 @@ public interface ClienteControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna a lista de clientes"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "Página não encontrada"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -28,6 +29,7 @@ public interface ClienteControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna o cliente"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -38,7 +40,9 @@ public interface ClienteControllerDoc {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna o novo cliente"),
+                    @ApiResponse(responseCode = "201", description = "Retorna o novo cliente"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -50,6 +54,7 @@ public interface ClienteControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna cliente atualizado"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -61,7 +66,9 @@ public interface ClienteControllerDoc {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna Ok"),
+                    @ApiResponse(responseCode = "204", description = "Retorna cliente deletado"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
