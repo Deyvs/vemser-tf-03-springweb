@@ -2,6 +2,7 @@ package br.com.dbc.vemser.ecommerce.service;
 
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoXProdutoRepository;
 import br.com.dbc.vemser.ecommerce.utils.ConverterProdutoParaDTOutil;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class PedidoXProdutoService {
     private final PedidoXProdutoRepository pedidoXProdutoRepository;
     private final ConverterProdutoParaDTOutil converterProdutoParaDTOutil;
 
-    public List<ProdutoDTO> listarProdutosDoPedido(int idPedido) throws BancoDeDadosException {
+    public List<ProdutoDTO> listarProdutosDoPedido(Integer idPedido) throws BancoDeDadosException {
 
         List<ProdutoDTO> produtos = pedidoXProdutoRepository.listarProdutosDoPedido(idPedido).stream()
                 .map(converterProdutoParaDTOutil::converteProdutoParaDTO)
@@ -25,21 +26,21 @@ public class PedidoXProdutoService {
         return produtos;
     }
 
-    public Boolean adicionarProdutoAoPedido(int idPedido, int idProduto) throws Exception {
+    public Boolean adicionarProdutoAoPedido(Integer idPedido, Integer idProduto) throws BancoDeDadosException, RegraDeNegocioException {
 
-        boolean produtoAdicionado = pedidoXProdutoRepository.adicionarProdutoAoPedido(idPedido, idProduto);
+        Boolean produtoAdicionado = pedidoXProdutoRepository.adicionarProdutoAoPedido(idPedido, idProduto);
 
-        if (!produtoAdicionado) throw new Exception("Erro ao adicionar produto");
+        if (!produtoAdicionado) throw new RegraDeNegocioException("Erro ao adicionar produto");
 
         return produtoAdicionado;
     }
 
 
-    public Boolean removerProdutoDoPedido(int idPedido, int idProduto) throws Exception {
+    public Boolean removerProdutoDoPedido(Integer idPedido, Integer idProduto) throws RegraDeNegocioException, BancoDeDadosException {
 
-        boolean produtoRemovido = pedidoXProdutoRepository.removerProdutoDoPedido(idPedido, idProduto);
+        Boolean produtoRemovido = pedidoXProdutoRepository.removerProdutoDoPedido(idPedido, idProduto);
 
-        if (!produtoRemovido) throw new Exception("Erro ao remover produto");
+        if (!produtoRemovido) throw new RegraDeNegocioException("Erro ao remover produto");
 
         return produtoRemovido;
 

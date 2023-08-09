@@ -1,6 +1,6 @@
 package br.com.dbc.vemser.ecommerce.entity.enums;
 
-public enum modelo {
+public enum TipoModelo {
     MANGALONGA,
     REGATA,
     MANGACURTA

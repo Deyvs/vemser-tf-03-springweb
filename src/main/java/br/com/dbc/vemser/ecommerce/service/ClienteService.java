@@ -3,11 +3,15 @@ package br.com.dbc.vemser.ecommerce.service;
 import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.ecommerce.entity.Cliente;
+import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.ClienteRepository;
+import br.com.dbc.vemser.ecommerce.utilitarias.NotificacaoByEmail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,39 +21,55 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
+    private final NotificacaoByEmail notificacaoByEmail;
+
     private final ObjectMapper objectMapper;
 
-    public List<ClienteDTO> list() throws Exception {
+    public List<ClienteDTO> list() throws BancoDeDadosException {
         List<Cliente> clientes = clienteRepository.list();
         List<ClienteDTO> clienteDTOS = new ArrayList<>();
 
-        for(Cliente cliente : clientes) {
+        for (Cliente cliente : clientes) {
             clienteDTOS.add(converterByClienteDTO(cliente));
         }
 
         return clienteDTOS;
     }
 
-    public ClienteDTO getClienteById(Integer idCliente) throws Exception {
+    public ClienteDTO getClienteById(Integer idCliente) throws BancoDeDadosException, RegraDeNegocioException {
+
         Cliente cliente = clienteRepository.getClienteById(idCliente);
+
+        if (cliente == null) throw new RegraDeNegocioException("Cliente não cadastrado!");
+
         return converterByClienteDTO(cliente);
     }
 
-    public ClienteDTO create(ClienteCreateDTO clienteCreateDTO) throws Exception {
+    public ClienteDTO create(ClienteCreateDTO clienteCreateDTO) throws BancoDeDadosException, MessagingException {
         Cliente entity = converterByCliente(clienteCreateDTO);
         Cliente cliente = clienteRepository.create(entity);
+        ClienteDTO clienteDTO = converterByClienteDTO(cliente);
+        notificacaoByEmail.notificarByEmailCliente(clienteDTO, "criado");
 
-        return converterByClienteDTO(cliente);
+        return clienteDTO;
     }
 
-    public ClienteDTO update(Integer idCliente, ClienteCreateDTO clienteCreateDTO) throws Exception{
+    public ClienteDTO update(Integer idCliente, ClienteCreateDTO clienteCreateDTO) throws BancoDeDadosException, MessagingException, RegraDeNegocioException {
+
+        getClienteById(idCliente);
+
         Cliente entity = converterByCliente(clienteCreateDTO);
         Cliente cliente = clienteRepository.update(idCliente, entity);
+        ClienteDTO clienteDTO = converterByClienteDTO(cliente);
+        notificacaoByEmail.notificarByEmailCliente(clienteDTO, "atualizado");
 
-        return converterByClienteDTO(cliente);
+        return clienteDTO;
     }
 
-    public void delete(Integer idCliente) throws Exception {
+    public void delete(Integer idCliente) throws BancoDeDadosException, RegraDeNegocioException, MessagingException {
+        ClienteDTO clienteDTO = getClienteById(idCliente);
+        notificacaoByEmail.notificarByEmailCliente(clienteDTO, "deletado");
+
         clienteRepository.delete(idCliente);
     }
 
