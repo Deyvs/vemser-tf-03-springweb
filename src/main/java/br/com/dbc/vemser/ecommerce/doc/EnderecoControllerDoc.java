@@ -2,7 +2,7 @@ package br.com.dbc.vemser.ecommerce.doc;
 
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoDTO;
-import br.com.dbc.vemser.ecommerce.entity.Endereco;
+import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -24,7 +24,7 @@ public interface EnderecoControllerDoc {
             }
     )
     @GetMapping
-    ResponseEntity<List<EnderecoDTO>> listarEnderecos();
+    ResponseEntity<List<EnderecoDTO>> listarEnderecos() throws BancoDeDadosException;
 
     @Operation(summary = "Listar endereço por ID", description = "Lista o endereço selecionado pelo ID no banco")
     @ApiResponses(
@@ -47,7 +47,7 @@ public interface EnderecoControllerDoc {
             }
     )
     @GetMapping("/{idPessoa}/pessoa")
-    ResponseEntity<List<Endereco>> listarEnderecosByIdPessoa(@Positive(message = "id deve ser maior que zero")
+    ResponseEntity<List<EnderecoDTO>> listarEnderecosByIdPessoa(@Positive(message = "id deve ser maior que zero")
                                                              @PathVariable("idPessoa") Integer idPessoa) throws Exception;
 
     @Operation(summary = "Criar um novo endereço", description = "Cria um novo endereço informando a pessoa destinada pelo ID no banco")

@@ -29,6 +29,19 @@ public class Endereco {
     private String cidade;
     @NotNull
     private String estado;
+    @NotNull
+    private String tipoEndereco;
+
+    @NotNull
+    private String bairro;
+
+
+    @NotNull
+    private String pais;
+
+
+
+
 }
 
 
