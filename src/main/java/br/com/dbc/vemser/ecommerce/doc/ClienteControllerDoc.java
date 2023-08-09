@@ -21,7 +21,7 @@ public interface ClienteControllerDoc {
             }
     )
     @GetMapping
-    ResponseEntity<List<ClienteDTO>> List();
+    ResponseEntity<List<ClienteDTO>> List() throws Exception;
 
     @Operation(summary = "Listar cliente por ID", description = "Lista cliente pelo ID no banco")
     @ApiResponses(
@@ -32,7 +32,7 @@ public interface ClienteControllerDoc {
             }
     )
     @GetMapping("/{idCliente}")
-    ResponseEntity<ClienteDTO> getClienteById(@PathVariable Integer idCliente);
+    ResponseEntity<ClienteDTO> getClienteById(@PathVariable Integer idCliente) throws Exception;
 
     @Operation(summary = "Criar um novo cliente", description = "Cria e adiciona um novo cliente no banco")
     @ApiResponses(
@@ -43,7 +43,7 @@ public interface ClienteControllerDoc {
             }
     )
     @PostMapping
-    ResponseEntity<ClienteDTO> create(@RequestBody ClienteCreateDTO cliente);
+    ResponseEntity<ClienteDTO> create(@RequestBody ClienteCreateDTO cliente) throws Exception;
 
     @Operation(summary = "Atualizar o cliente pelo ID", description = "Atualiza o cliente informado pelo ID no banco")
     @ApiResponses(
@@ -55,7 +55,7 @@ public interface ClienteControllerDoc {
     )
     @PutMapping("/{idCliente}")
     ResponseEntity<ClienteDTO> update(@PathVariable Integer idCliente,
-                                             @RequestBody ClienteCreateDTO cliente);
+                                             @RequestBody ClienteCreateDTO cliente) throws Exception;
 
     @Operation(summary = "Deletar o cliente pelo ID", description = "Deleta o cliente informado pelo ID no banco")
     @ApiResponses(
@@ -66,6 +66,6 @@ public interface ClienteControllerDoc {
             }
     )
     @DeleteMapping("/{idCliente}")
-    ResponseEntity<Void> delete(@PathVariable Integer idCliente);
+    ResponseEntity<Void> delete(@PathVariable Integer idCliente) throws Exception;
 
 }
