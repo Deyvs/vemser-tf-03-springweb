@@ -1,10 +1,8 @@
 package br.com.dbc.vemser.ecommerce.repository;
 
 import br.com.dbc.vemser.ecommerce.db.ConexaoBancoDeDados;
-import br.com.dbc.vemser.ecommerce.entity.Cliente;
 import br.com.dbc.vemser.ecommerce.entity.Endereco;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.ecommerce.exceptions.EscolherOpcaoException;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -62,9 +60,11 @@ public class EnderecoRepository {
                 e.printStackTrace();
             }
         }
-    };
+    }
 
-    public Endereco getEnderecoById(Integer idEndereco) throws EscolherOpcaoException, BancoDeDadosException {
+    ;
+
+    public Endereco getEnderecoById(Integer idEndereco) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -95,7 +95,8 @@ public class EnderecoRepository {
         }
     }
 
-    public Endereco listarEnderecoByIdPessoa(Integer idCliente) throws BancoDeDadosException {
+    public List<Endereco> listarEnderecoByIdPessoa(Integer idCliente) throws BancoDeDadosException {
+        List<Endereco> enderecos = new ArrayList<>();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -106,12 +107,12 @@ public class EnderecoRepository {
             stmt.setInt(1, idCliente);
             ResultSet res = stmt.executeQuery();
 
-            if (res.next()) {
+            while (res.next()) {
                 Endereco endereco = getClienteFromResultSet(res);
-                return endereco;
+                enderecos.add(endereco);
             }
 
-            return null;
+            return enderecos;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } catch (Exception e) {
@@ -128,7 +129,7 @@ public class EnderecoRepository {
         }
     }
 
-    public Endereco create(Integer idCliente, Endereco endereco) throws EscolherOpcaoException, BancoDeDadosException {
+    public Endereco create(Integer idCliente, Endereco endereco) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -136,21 +137,28 @@ public class EnderecoRepository {
             Integer proximoIdEndereco = this.getProximoId(con);
             endereco.setIdEndereco(proximoIdEndereco);
 
+
             String sqlEndereco = "INSERT INTO ENDERECO\n" +
-                    "(ID_ENDERECO, CEP, CIDADE, TIPO_ENDERECO, LOGRADOURO, NUMERO, COMPLEMENTO, UF_ESTADO, ID_CLIENTE)\n" +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)\n";
+                    "(ID_ENDERECO, CEP, CIDADE, TIPO_ENDERECO, BAIRRO, LOGRADOURO, NUMERO, COMPLEMENTO, PAIS, UF_ESTADO, ID_CLIENTE)\n" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)\n";
+
 
             PreparedStatement stmtEndereco = con.prepareStatement(sqlEndereco);
 
-            stmtEndereco.setInt(1, endereco.getIdEndereco());
-            stmtEndereco.setString(2, endereco.getLogradouro());
-            stmtEndereco.setString(3, endereco.getCep());
-            stmtEndereco.setString(4, endereco.getEstado());
-            stmtEndereco.setString(5, endereco.getCidade());
-            stmtEndereco.setInt(6, endereco.getNumero());
-            stmtEndereco.setString(7, endereco.getComplemento());
+            stmtEndereco.setInt(1, proximoIdEndereco);
+            stmtEndereco.setString(2, endereco.getCep());
+            stmtEndereco.setString(3, endereco.getCidade());
+            stmtEndereco.setString(4, endereco.getTipoEndereco());
+            stmtEndereco.setString(5, endereco.getBairro());
+            stmtEndereco.setString(6, endereco.getLogradouro());
+            stmtEndereco.setInt(7, endereco.getNumero());
+            stmtEndereco.setString(8, endereco.getComplemento());
+            stmtEndereco.setString(9, endereco.getPais());
+            stmtEndereco.setString(10, endereco.getEstado());
+            stmtEndereco.setInt(11, idCliente);
 
             stmtEndereco.executeUpdate();
+            endereco.setIdCliente(idCliente);
 
             return endereco;
         } catch (SQLException e) {
@@ -173,20 +181,23 @@ public class EnderecoRepository {
     public Endereco update(Integer idEndereco, Endereco endereco) throws BancoDeDadosException {
         Connection con = null;
 
+
         try {
             con = ConexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE ENDERECO SET");
-            sql.append(" id_cliente = ?,");
-            sql.append(" logradouro = ?,");
-            sql.append(" numero = ?,");
-            sql.append(" cidade = ?,");
-            sql.append(" cep = ?,");
-            sql.append(" uf_estado = ?,");
-            sql.append(" complemento = ?,");
-            sql.append(" tipo_endereco = ?");
-            sql.append(" WHERE id_endereco = ? ");
+            sql.append(" ID_CLIENTE = ?,");
+            sql.append(" LOGRADOURO = ?,");
+            sql.append(" PAIS = ?,");
+            sql.append(" NUMERO = ?,");
+            sql.append(" BAIRRO = ?,");
+            sql.append(" CIDADE = ?,");
+            sql.append(" CEP = ?,");
+            sql.append(" UF_ESTADO = ?,");
+            sql.append(" COMPLEMENTO = ?,");
+            sql.append(" TIPO_ENDERECO = ?");
+            sql.append(" WHERE ID_ENDERECO =?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
@@ -250,14 +261,20 @@ public class EnderecoRepository {
     }
 
     private Endereco getClienteFromResultSet(ResultSet res) throws SQLException {
+
+
         Endereco endereco = new Endereco();
+        endereco.setIdEndereco(res.getInt("ID_ENDERECO"));
         endereco.setIdCliente(res.getInt("id_cliente"));
-        endereco.setCep(endereco.getCep());
-        endereco.setCidade(endereco.getCidade());
-        endereco.setLogradouro(endereco.getLogradouro());
-        endereco.setNumero(endereco.getNumero());
-        endereco.setComplemento(endereco.getComplemento());
-        endereco.setEstado(endereco.getEstado());
+        endereco.setCep(res.getString("CEP"));
+        endereco.setCidade(res.getString("CIDADE"));
+        endereco.setLogradouro(res.getString("LOGRADOURO"));
+        endereco.setNumero(res.getInt("NUMERO"));
+        endereco.setComplemento(res.getString("COMPLEMENTO"));
+        endereco.setEstado(res.getString("UF_ESTADO"));
+        endereco.setPais(res.getString("PAIS"));
+        endereco.setTipoEndereco(res.getString("TIPO_ENDERECO"));
+        endereco.setBairro(res.getString("BAIRRO"));
 
         return endereco;
     }

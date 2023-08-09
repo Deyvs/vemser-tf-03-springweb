@@ -3,7 +3,6 @@ package br.com.dbc.vemser.ecommerce.controller;
 import br.com.dbc.vemser.ecommerce.doc.EnderecoControllerDoc;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoDTO;
-import br.com.dbc.vemser.ecommerce.entity.Endereco;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.service.EnderecoService;
 import lombok.Data;
@@ -30,16 +29,22 @@ public class EnderecoController implements EnderecoControllerDoc {
     }
 
     @GetMapping("/{idEndereco}")
-    public ResponseEntity<EnderecoDTO> getEnderecoById(@Positive(message = "id deve ser maior que zero") @PathVariable("idEndereco") Integer idEndereco) throws Exception {
+    public ResponseEntity<EnderecoDTO> getEnderecoById(@Positive(message = "id deve ser maior que zero")
+                                                           @PathVariable("idEndereco")
+                                                           Integer idEndereco) throws BancoDeDadosException {
         return new ResponseEntity<>(enderecoService.getEnderecoById(idEndereco), HttpStatus.OK);
     }
     @GetMapping("/{idPessoa}/pessoa")
-    public ResponseEntity<EnderecoDTO> listarEnderecosByIdPessoa(@Positive(message = "id deve ser maior que zero") @PathVariable("idPessoa") Integer idPessoa) throws Exception {
+    public ResponseEntity<List<EnderecoDTO>> listarEnderecosByIdPessoa(
+            @Positive(message = "id deve ser maior que zero")
+            @PathVariable("idPessoa") Integer idPessoa) throws BancoDeDadosException {
+
         return new ResponseEntity<>(enderecoService.listarEnderecosByIdPessoa(idPessoa), HttpStatus.OK);
     }
 
     @PostMapping("/{idPessoa}")
-    public ResponseEntity<EnderecoDTO> create(@Positive(message = "id deve ser maior que zero") @PathVariable("idPessoa") Integer idPessoa,
+    public ResponseEntity<EnderecoDTO> create(@Positive(message = "id deve ser maior que zero")
+                                                  @PathVariable("idPessoa") Integer idPessoa,
                                               @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception {
         return new ResponseEntity<EnderecoDTO>(enderecoService.create(idPessoa , enderecoCreateDTO), HttpStatus.OK);
     }
