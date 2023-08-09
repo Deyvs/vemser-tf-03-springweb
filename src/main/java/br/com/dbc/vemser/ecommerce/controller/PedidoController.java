@@ -48,26 +48,16 @@ public class PedidoController implements PedidoControllerDoc {
 
     // Implementação dos métodos da classe PedidoXProdutoService
 
-    @PostMapping("/{idPedido}/carrinho/{idProduto}")
-    public ResponseEntity<String> adicionarProdutoAoPedido(@PathVariable Integer idPedido,
+    @PostMapping("/{idPedido}/carrinho/{idProduto}") //  add prod no pedido
+    public ResponseEntity<PedidoOutputDTO> adicionarProdutoAoPedido(@PathVariable Integer idPedido,
                                                            @PathVariable Integer idProduto) throws Exception {
-        try {
-            pedidoXProdutoService.adicionarProdutoAoPedido(idPedido, idProduto);
-            return ResponseEntity.ok("Seu produto foi adicionado ao pedido com sucesso!");
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao adicionar seu produto ao pedido.");
-        }
+        return new ResponseEntity<>(pedidoService.adicionarProdutoaoPedido(idPedido,idProduto),HttpStatus.OK);
     }
 
     @DeleteMapping("/{idPedido}/carrinho/{idProduto}")
-    public ResponseEntity<String> removerProdutoDoPedido(@PathVariable Integer idPedido,
+    public ResponseEntity<PedidoOutputDTO> removerProdutoDoPedido(@PathVariable Integer idPedido,
                                                          @PathVariable Integer idProduto) throws Exception {
-        try {
-            pedidoXProdutoService.removerProdutoDoPedido(idPedido, idProduto);
-            return ResponseEntity.ok("Seu produto foi removido do pedido com sucesso!");
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao remover seu produto do pedido.");
-        }
+       return new ResponseEntity<>(pedidoService.RemoverProdutoDoPedido(idPedido,idProduto),HttpStatus.OK);
     }
 
 }
