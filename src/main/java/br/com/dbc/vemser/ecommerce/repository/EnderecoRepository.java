@@ -203,12 +203,15 @@ public class EnderecoRepository {
 
             stmt.setInt(1, endereco.getIdCliente());
             stmt.setString(2, endereco.getLogradouro());
-            stmt.setString(3, endereco.getCep());
-            stmt.setString(4, endereco.getEstado());
-            stmt.setString(5, endereco.getCidade());
-            stmt.setInt(6, endereco.getNumero());
-            stmt.setString(7, endereco.getComplemento());
-            stmt.setInt(8, idEndereco);
+            stmt.setString(3, endereco.getPais());
+            stmt.setInt(4, endereco.getNumero());
+            stmt.setString(5, endereco.getBairro());
+            stmt.setString(6, endereco.getCidade());
+            stmt.setString(7, endereco.getCep());
+            stmt.setString(8, endereco.getEstado());
+            stmt.setString(9, endereco.getComplemento());
+            stmt.setString(10, endereco.getTipoEndereco());
+            stmt.setInt(11, idEndereco);
 
             // Executa-se a consulta
             stmt.executeUpdate();
