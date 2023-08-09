@@ -1,2 +1,4 @@
-package br.com.dbc.vemser.ecommerce.doc;public interface EnderecoControllerDoc {
+package br.com.dbc.vemser.ecommerce.doc;
+
+public interface EnderecoControllerDoc {
 }
