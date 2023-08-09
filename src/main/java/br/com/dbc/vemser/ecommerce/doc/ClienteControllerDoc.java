@@ -23,20 +23,48 @@ public interface ClienteControllerDoc {
     @GetMapping
     ResponseEntity<List<ClienteDTO>> List();
 
-
+    @Operation(summary = "Listar cliente por ID", description = "Lista cliente pelo ID no banco")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna o cliente"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
     @GetMapping("/{idCliente}")
     ResponseEntity<ClienteDTO> getClienteById(@PathVariable Integer idCliente);
 
-
+    @Operation(summary = "Cria um novo cliente", description = "Cria e adiciona um novo cliente no banco")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna o novo cliente"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
     @PostMapping
     ResponseEntity<ClienteDTO> create(@RequestBody ClienteCreateDTO cliente);
 
-
+    @Operation(summary = "Atualiza o cliente pelo ID", description = "Atualiza o cliente informado pelo ID no banco")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna cliente atualizado"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
     @PutMapping("/{idCliente}")
     ResponseEntity<ClienteDTO> update(@PathVariable Integer idCliente,
                                              @RequestBody ClienteCreateDTO cliente);
 
-
+    @Operation(summary = "Deleta o cliente pelo ID", description = "Deleta o cliente informado pelo ID no banco")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna Ok"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
     @DeleteMapping("/{idCliente}")
     ResponseEntity<Void> delete(@PathVariable Integer idCliente);
 
