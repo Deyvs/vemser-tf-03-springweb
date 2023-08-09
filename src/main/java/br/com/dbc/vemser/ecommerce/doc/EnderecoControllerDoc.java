@@ -36,7 +36,7 @@ public interface EnderecoControllerDoc {
     )
     @GetMapping("/{idEndereco}")
     ResponseEntity<EnderecoDTO> getEnderecoById(@Positive(message = "id deve ser maior que zero")
-                                                @PathVariable("idEndereco") Integer idEndereco);
+                                                @PathVariable("idEndereco") Integer idEndereco) throws Exception;
 
     @Operation(summary = "Listar endereço por ID de pessoa", description = "Lista endereço pelo ID da pessoa cadastrada no banco")
     @ApiResponses(
@@ -48,7 +48,7 @@ public interface EnderecoControllerDoc {
     )
     @GetMapping("/{idPessoa}/pessoa")
     ResponseEntity<List<Endereco>> listarEnderecosByIdPessoa(@Positive(message = "id deve ser maior que zero")
-                                                             @PathVariable("idPessoa") Integer idPessoa);
+                                                             @PathVariable("idPessoa") Integer idPessoa) throws Exception;
 
     @Operation(summary = "Criar um novo endereço", description = "Cria um novo endereço informando a pessoa destinada pelo ID no banco")
     @ApiResponses(
@@ -61,7 +61,7 @@ public interface EnderecoControllerDoc {
     @PostMapping("/{idPessoa}")
     ResponseEntity<EnderecoDTO> create(@Positive(message = "id deve ser maior que zero")
                                        @PathVariable("idPessoa") Integer idPessoa,
-                                       @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO);
+                                       @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception;
 
     @Operation(summary = "Atualizar endereço por ID", description = "Atualiza o endereço selecionado pelo ID")
     @ApiResponses(
@@ -74,7 +74,7 @@ public interface EnderecoControllerDoc {
     @PutMapping("/{idEndereco}")
     ResponseEntity<EnderecoDTO> update(@Positive(message = "id deve ser maior que zero")
                                               @PathVariable("idEndereco") Integer idEndereco,
-                                              @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO);
+                                              @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception;
 
     @Operation(summary = "Deletar endereço por ID", description = "Deleta o endereço selecionado pelo ID")
     @ApiResponses(
@@ -86,6 +86,6 @@ public interface EnderecoControllerDoc {
     )
     @DeleteMapping("/{idEndereco}")
     ResponseEntity<Void> delete(@Positive(message = "id deve ser maior que zero")
-                                @PathVariable("idEndereco") Integer idEndereco);
+                                @PathVariable("idEndereco") Integer idEndereco) throws Exception;
 
 }
