@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@AllArgsConstructor
 @Validated
+@AllArgsConstructor
+@RestController
 @RequestMapping("/cliente")
 public class ClienteController {
 

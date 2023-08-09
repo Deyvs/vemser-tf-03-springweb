@@ -9,16 +9,17 @@ import br.com.dbc.vemser.ecommerce.service.ProdutoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+@Validated
+@AllArgsConstructor
 @RestController
 @RequestMapping("/produto")
-@AllArgsConstructor
-
 public class ProdutoController {
 
     private final ProdutoService produtoService;
