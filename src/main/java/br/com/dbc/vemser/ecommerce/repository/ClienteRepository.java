@@ -203,13 +203,13 @@ public class ClienteRepository {
     }
 
     private Cliente getClienteFromResultSet(ResultSet res) throws SQLException {
-        Cliente clienteFisico = new Cliente();
-        clienteFisico.setIdCliente(res.getInt("id_cliente"));
-        clienteFisico.setNome(res.getString("nome"));
-        clienteFisico.setTelefone(res.getString("telefone"));
-        clienteFisico.setEmail(res.getString("email"));
-        clienteFisico.setCpf(res.getString("cpf"));
-        return clienteFisico;
+        Cliente cliente = new Cliente();
+        cliente.setIdCliente(res.getInt("id_cliente"));
+        cliente.setNome(res.getString("nome"));
+        cliente.setTelefone(res.getString("telefone"));
+        cliente.setEmail(res.getString("email"));
+        cliente.setCpf(res.getString("cpf"));
+        return cliente;
     }
 }
 

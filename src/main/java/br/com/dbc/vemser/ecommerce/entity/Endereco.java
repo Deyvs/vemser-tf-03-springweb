@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.ecommerce.entity;
 
-import br.com.dbc.vemser.ecommerce.entity.enums.TipoEndereco;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +12,9 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Endereco {
+
     private Integer idEndereco;
     private Integer idCliente;
-    @NotNull
-    private TipoEndereco tipoEndereco;
     @NotBlank
     @Size(max = 250, message = "Não pode conter mais de 250 caracteres")
     private String logradouro;
@@ -31,8 +29,6 @@ public class Endereco {
     private String cidade;
     @NotNull
     private String estado;
-    @NotNull
-    private String pais;
 }
 
 //    public Endereco() {

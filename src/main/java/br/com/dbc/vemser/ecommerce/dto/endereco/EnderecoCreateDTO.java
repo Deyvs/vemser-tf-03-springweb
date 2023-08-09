@@ -1,6 +1,6 @@
 package br.com.dbc.vemser.ecommerce.dto.endereco;
 
-import br.com.dbc.vemser.ecommerce.entity.enums.TipoEndereco;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -51,4 +51,5 @@ public class EnderecoCreateDTO {
     @NotNull(message = "O país não pode ser nulo")
     @Schema(description = "Cidade do endereço", required = true, example = "Brasil")
     private String pais;
+
 }
