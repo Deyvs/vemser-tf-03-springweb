@@ -1,8 +1,9 @@
 package br.com.dbc.vemser.ecommerce.service;
 
-import br.com.dbc.vemser.ecommerce.config.dto.cliente.ClienteDTO;
-import br.com.dbc.vemser.ecommerce.config.dto.endereco.EnderecoCreateDTO;
-import br.com.dbc.vemser.ecommerce.config.dto.endereco.EnderecoDTO;
+
+import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
+import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoCreateDTO;
+import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Endereco;
 import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.EnderecoRepository;

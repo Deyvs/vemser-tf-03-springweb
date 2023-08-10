@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.ecommerce.service;
 
-import br.com.dbc.vemser.ecommerce.config.dto.cliente.ClienteCreateDTO;
-import br.com.dbc.vemser.ecommerce.config.dto.cliente.ClienteDTO;
+import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteCreateDTO;
+import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.ecommerce.entity.Cliente;
 import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;

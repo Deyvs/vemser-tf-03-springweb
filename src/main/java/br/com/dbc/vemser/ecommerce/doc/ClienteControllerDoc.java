@@ -1,7 +1,8 @@
 package br.com.dbc.vemser.ecommerce.doc;
 
-import br.com.dbc.vemser.ecommerce.config.dto.cliente.ClienteCreateDTO;
-import br.com.dbc.vemser.ecommerce.config.dto.cliente.ClienteDTO;
+
+import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteCreateDTO;
+import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
