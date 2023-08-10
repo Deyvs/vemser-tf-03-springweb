@@ -132,22 +132,19 @@ public class PedidoService {
 
         List<ProdutoDTO> produtosDTO = pedidoXProdutoService.listarProdutosDoPedido(pedidoAchado.getIdPedido());
 
-        for (ProdutoDTO produto:produtosDTO) {
+        if(flag.equalsIgnoreCase("i")){
 
-            if(produto.getIdProduto().equals(idProduto)){
+            Double valor = pedidoAchado.getValor() + produtoDTO.getValor();
 
-                if(flag.equalsIgnoreCase("i")){
+            if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
 
-                    Double valor = pedidoAchado.getValor() + produtoDTO.getValor();
+                return true;
+            }
 
-                    if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
-
-                        return true;
-                    }
-
-                }
-                if (flag.equalsIgnoreCase("d")) {
-
+        }
+        if (flag.equalsIgnoreCase("d")) {
+            for (ProdutoDTO produto:produtosDTO) {
+                if(produto.getIdProduto().equals(idProduto)){
                     Double valor = pedidoAchado.getValor() - produtoDTO.getValor();
 
                     if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
@@ -155,7 +152,6 @@ public class PedidoService {
                         return true;
                     }
                 }
-                break;
             }
         }
 
