@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.ecommerce.utils;
 
 import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
+import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
 import br.com.dbc.vemser.ecommerce.service.EmailService;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -41,15 +42,25 @@ public class NotificacaoByEmail {
 
     }
 
-    public void notificarByEmailPedido(ClienteDTO clienteDTO, String statusDeNotificacao) throws MessagingException {
+    public void notificarByEmailPedidoCliente(ClienteDTO clienteDTO, PedidoDTO pedidoDTO) throws MessagingException {
         HashMap<String, String> dados = new HashMap<>();
         dados.put("nome", clienteDTO.getNome());
-        String response = "Seu pedido foi <b>" + statusDeNotificacao + "</b> com sucesso";
+        String response = "Seu pedido foi <b>finalizado</b> com sucesso" +
+                "Valor Total do Pedido: R$ " + pedidoDTO.getValor();
         dados.put("status", response);
 
         emailService.sendTemplateEmail(dados, clienteDTO.getEmail());
 
     }
+
+//    public void notificarByEmailPedidoCliente(ClienteDTO clienteDTO, PedidoDTO pedidoDTO) throws MessagingException {
+//        HashMap<String, String> dados = new HashMap<>();
+//        dados.put("nome", clienteDTO.getNome());
+//        String response = "Seu pedido foi <b>" + statusDeNotificacao + "</b> com sucesso";
+//        dados.put("status", response);
+//
+//        emailService.sendTemplateEmail(dados, clienteDTO.getEmail());
+//    }
 
 }
 

@@ -3,7 +3,6 @@ package br.com.dbc.vemser.ecommerce.service;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Produto;
-import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.ProdutoRepository;
 import br.com.dbc.vemser.ecommerce.utils.ConverterProdutoParaDTOutil;
@@ -67,7 +66,6 @@ public class ProdutoService {
     public void deletar(Integer idProduto) throws Exception {
 
         Produto buscarProduto = produtoRepository.buscarProduto(idProduto);
-//        if (buscarProduto == null) throw new RegraDeNegocioException("Produto não cadastrado!");
 
         produtoRepository.deletar(idProduto);
 

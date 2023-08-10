@@ -36,30 +36,43 @@ public class EnderecoService {
 
     public EnderecoDTO getEnderecoById(Integer idEndereco) throws Exception {
         Endereco endereco = enderecoRepository.getEnderecoById(idEndereco);
+        if(endereco == null) {
+            throw new RegraDeNegocioException("Endereço não encontrado");
+        }
         return converterByEnderecoDTO(endereco);
     }
     public List<EnderecoDTO> listarEnderecoByIdCliente(Integer idCliente) throws Exception {
-        return enderecoRepository.listarEnderecoByIdCliente(idCliente)
+        ClienteDTO clienteDTO = clienteService.getClienteById(idCliente);
+        if(clienteDTO == null) {
+            throw new RegraDeNegocioException("Cliente não encontrado");
+        }
+        List<EnderecoDTO> enderecoDTOList = enderecoRepository.listarEnderecoByIdCliente(idCliente)
                 .stream().map(this::converterByEnderecoDTO).collect(Collectors.toList());
+
+        return enderecoDTOList;
     }
 
     public EnderecoDTO create(Integer idCliente, EnderecoCreateDTO enderecoCreateDTO) throws Exception {
-//        ClienteDTO clienteDTO = clienteService.getClienteById(idCliente);
+        ClienteDTO clienteDTO = clienteService.getClienteById(idCliente);
+        if(clienteDTO == null) {
+            throw new RegraDeNegocioException("Cliente não encontrado");
+        }
         Endereco entity = converterByEndereco(enderecoCreateDTO);
 
         Endereco enderecoCreated = enderecoRepository.create(idCliente, entity);
 
         EnderecoDTO enderecoDTO = converterByEnderecoDTO(enderecoCreated);
-//        notificacaoByEmail.notificarByEmailEndereco(clienteDTO, "criado");
+        notificacaoByEmail.notificarByEmailEndereco(clienteDTO, "criado");
         return enderecoDTO;
     }
 
     public EnderecoDTO update(Integer idEndereco, EnderecoCreateDTO enderecoCreateDTO) throws Exception {
-        Endereco enderecoExiste = enderecoRepository.getEnderecoById(idEndereco);
-        if(enderecoExiste == null) {
+        Endereco endereco = enderecoRepository.getEnderecoById(idEndereco);
+        if(endereco == null) {
             throw new RegraDeNegocioException("Endereço não encontrado");
         }
-        enderecoCreateDTO.setIdCliente(enderecoExiste.getIdCliente());
+
+        enderecoCreateDTO.setIdCliente(endereco.getIdCliente());
         Endereco entity = converterByEndereco(enderecoCreateDTO);
         entity.setIdEndereco(idEndereco);
 
@@ -75,10 +88,11 @@ public class EnderecoService {
 
     public void delete(Integer idEndereco) throws Exception {
         Endereco endereco = enderecoRepository.getEnderecoById(idEndereco);
-        ClienteDTO clienteDTO = clienteService.getClienteById(endereco.getIdCliente());
-        enderecoRepository.delete(idEndereco);
-        notificacaoByEmail.notificarByEmailEndereco(clienteDTO, "deletado");
-
+        if(endereco != null) {
+            ClienteDTO clienteDTO = clienteService.getClienteById(endereco.getIdCliente());
+            enderecoRepository.delete(idEndereco);
+            notificacaoByEmail.notificarByEmailEndereco(clienteDTO, "deletado");
+        }
     }
 
     public EnderecoDTO converterByEnderecoDTO(Endereco endereco) {

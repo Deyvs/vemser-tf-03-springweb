@@ -4,11 +4,12 @@ import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
 import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
+import br.com.dbc.vemser.ecommerce.entity.Cliente;
 import br.com.dbc.vemser.ecommerce.entity.Pedido;
-import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;
 import br.com.dbc.vemser.ecommerce.repository.PedidoXProdutoRepository;
+import br.com.dbc.vemser.ecommerce.utils.NotificacaoByEmail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class PedidoService {
     private final PedidoXProdutoRepository pedidoXProdutoRepository;
     private final PedidoXProdutoService pedidoXProdutoService;
     private final ClienteService clienteService;
+    private final NotificacaoByEmail notificacaoByEmail;
     private final ObjectMapper objectMapper;
 
     public PedidoDTO criarPedido(Integer idCliente, PedidoCreateDTO idProduto) throws Exception {
@@ -35,7 +37,7 @@ public class PedidoService {
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto.getIdProduto());
 
         PedidoDTO pedidoOutputDTO = objectMapper.convertValue(pedidoRepository.adicionar(
-                new Pedido(null, idCliente, produtoDTO.getValor(),"n"))
+                new Pedido(null, idCliente, produtoDTO.getValor(),"N"))
                 , PedidoDTO.class);
 
         pedidoXProdutoRepository.adicionarProdutoAoPedido(pedidoOutputDTO.getIdPedido(),idProduto.getIdProduto());
@@ -174,6 +176,9 @@ public class PedidoService {
         }
         pedidoRepository.editarStatusPedido("S",idPedido);
         pedidoDTO.setStatusPedido("S");
+        ClienteDTO clienteDTO = clienteService.getClienteById(pedidoDTO.getIdCliente());
+
+        notificacaoByEmail.notificarByEmailPedidoCliente(clienteDTO, pedidoDTO);
 
         return pedidoDTO;
     }
