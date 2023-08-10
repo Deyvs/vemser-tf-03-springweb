@@ -46,21 +46,11 @@ public class NotificacaoByEmail {
         HashMap<String, String> dados = new HashMap<>();
         dados.put("nome", clienteDTO.getNome());
         String response = "Seu pedido foi <b>finalizado</b> com sucesso" +
-                "Valor Total do Pedido: R$ " + pedidoDTO.getValor();
+                "<br>Valor Total do Pedido: R$ " + String.format("%.2f", pedidoDTO.getValor());
         dados.put("status", response);
 
         emailService.sendTemplateEmail(dados, clienteDTO.getEmail());
 
     }
-
-//    public void notificarByEmailPedidoCliente(ClienteDTO clienteDTO, PedidoDTO pedidoDTO) throws MessagingException {
-//        HashMap<String, String> dados = new HashMap<>();
-//        dados.put("nome", clienteDTO.getNome());
-//        String response = "Seu pedido foi <b>" + statusDeNotificacao + "</b> com sucesso";
-//        dados.put("status", response);
-//
-//        emailService.sendTemplateEmail(dados, clienteDTO.getEmail());
-//    }
-
 }
 
