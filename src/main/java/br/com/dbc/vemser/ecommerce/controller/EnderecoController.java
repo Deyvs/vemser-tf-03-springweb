@@ -1,8 +1,8 @@
 package br.com.dbc.vemser.ecommerce.controller;
 
 import br.com.dbc.vemser.ecommerce.doc.EnderecoControllerDoc;
-import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoCreateDTO;
-import br.com.dbc.vemser.ecommerce.dto.endereco.EnderecoDTO;
+import br.com.dbc.vemser.ecommerce.config.dto.endereco.EnderecoCreateDTO;
+import br.com.dbc.vemser.ecommerce.config.dto.endereco.EnderecoDTO;
 import br.com.dbc.vemser.ecommerce.service.EnderecoService;
 import lombok.Data;
 import org.springframework.http.HttpStatus;

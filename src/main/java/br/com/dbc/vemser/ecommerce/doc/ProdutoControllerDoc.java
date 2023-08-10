@@ -1,9 +1,7 @@
 package br.com.dbc.vemser.ecommerce.doc;
 
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoCreateDTO;
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
-import br.com.dbc.vemser.ecommerce.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.ecommerce.config.dto.produto.ProdutoCreateDTO;
+import br.com.dbc.vemser.ecommerce.config.dto.produto.ProdutoDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

@@ -27,7 +27,6 @@ public class ConexaoBancoDeDados {
 
         return con;
     }
-
     public static void main(String[] args) {
         try {
             // Obtém a conexão do método getConnection()

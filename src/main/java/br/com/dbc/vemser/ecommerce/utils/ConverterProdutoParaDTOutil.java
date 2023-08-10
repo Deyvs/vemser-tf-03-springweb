@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.ecommerce.utils;
 
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoCreateDTO;
+import br.com.dbc.vemser.ecommerce.config.dto.produto.ProdutoDTO;
+import br.com.dbc.vemser.ecommerce.config.dto.produto.ProdutoCreateDTO;
 import br.com.dbc.vemser.ecommerce.entity.Produto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;

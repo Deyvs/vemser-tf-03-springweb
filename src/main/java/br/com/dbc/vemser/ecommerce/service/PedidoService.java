@@ -1,10 +1,9 @@
 package br.com.dbc.vemser.ecommerce.service;
 
-import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
-import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoCreateDTO;
-import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
-import br.com.dbc.vemser.ecommerce.dto.produto.ProdutoDTO;
-import br.com.dbc.vemser.ecommerce.entity.Cliente;
+import br.com.dbc.vemser.ecommerce.config.dto.cliente.ClienteDTO;
+import br.com.dbc.vemser.ecommerce.config.dto.pedido.PedidoCreateDTO;
+import br.com.dbc.vemser.ecommerce.config.dto.pedido.PedidoDTO;
+import br.com.dbc.vemser.ecommerce.config.dto.produto.ProdutoDTO;
 import br.com.dbc.vemser.ecommerce.entity.Pedido;
 import br.com.dbc.vemser.ecommerce.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.ecommerce.repository.PedidoRepository;

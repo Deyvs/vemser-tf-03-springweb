@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.ecommerce.utils;
 
-import br.com.dbc.vemser.ecommerce.dto.cliente.ClienteDTO;
-import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
+import br.com.dbc.vemser.ecommerce.config.dto.cliente.ClienteDTO;
+import br.com.dbc.vemser.ecommerce.config.dto.pedido.PedidoDTO;
 import br.com.dbc.vemser.ecommerce.service.EmailService;
 import lombok.Data;
 import org.springframework.stereotype.Component;
