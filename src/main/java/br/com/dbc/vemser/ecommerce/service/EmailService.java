@@ -25,12 +25,11 @@ public class EmailService {
     private final Configuration fmConfiguration;
     @Value("${spring.mail.username}")
     private String userEmail;
-    private String from = "deyvison.silva@dbccompany.com.br";
 
     public void sendSimpleEmail() {
         SimpleMailMessage email = new SimpleMailMessage();
 
-        email.setFrom(from);
+        email.setFrom(userEmail);
         email.setTo("aula.vemser@gmail.com");
         email.setSubject("aula vem ser");
         email.setText("Olá! Testando JavaMail");
@@ -42,7 +41,7 @@ public class EmailService {
 
         MimeMessageHelper helper = new MimeMessageHelper(email, true);
 
-        helper.setFrom(from);
+        helper.setFrom(userEmail);
         helper.setTo("aula.vemser@gmail.com");
         helper.setSubject("email com anexo");
         helper.setText("enviando email com anexo\npulando linha");
@@ -61,7 +60,7 @@ public class EmailService {
 
         try {
 
-            helper.setFrom(from);
+            helper.setFrom(userEmail);
             helper.setTo(emailPessoa);
             helper.setSubject("email a partir de template");
             helper.setText(getContentFromTemplate(dadosPessoa), true);
