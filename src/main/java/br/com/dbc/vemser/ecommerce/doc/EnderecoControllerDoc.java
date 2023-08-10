@@ -19,6 +19,7 @@ public interface EnderecoControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna lista de endereços"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "Página não encontrada"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -30,6 +31,7 @@ public interface EnderecoControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna endereço solicitado pelo ID"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -37,11 +39,12 @@ public interface EnderecoControllerDoc {
     ResponseEntity<EnderecoDTO> getEnderecoById(@Positive(message = "id deve ser maior que zero")
                                                 @PathVariable("idEndereco") Integer idEndereco) throws Exception;
 
-    @Operation(summary = "Listar endereço por ID do cliente", description = "Lista endereço pelo ID do cliente cadastrada no banco")
+    @Operation(summary = "Listar endereço por ID do cliente", description = "Lista endereço pelo ID do cliente cadastrado no banco")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna o endereço do cliente selecionada pelo ID"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -49,11 +52,13 @@ public interface EnderecoControllerDoc {
     ResponseEntity<List<EnderecoDTO>> listarEnderecoByIdCliente(@Positive(message = "id deve ser maior que zero")
                                                              @PathVariable("idCliente") Integer idCliente) throws Exception;
 
-    @Operation(summary = "Criar um novo endereço", description = "Cria um novo endereço informando a pessoa destinada pelo ID no banco")
+    @Operation(summary = "Criar um novo endereço", description = "Cria um novo endereço informando o cliente destinada pelo ID no banco")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna o novo endereço cadastrado"),
+                    @ApiResponse(responseCode = "201", description = "Retorna o endereço criado"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -67,6 +72,7 @@ public interface EnderecoControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna o endereço ataualizado no banco"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -79,7 +85,9 @@ public interface EnderecoControllerDoc {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna Ok"),
+                    @ApiResponse(responseCode = "204", description = "Retorna endereço deletado"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
