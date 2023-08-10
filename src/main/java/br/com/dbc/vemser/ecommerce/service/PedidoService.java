@@ -24,6 +24,7 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final ProdutoService produtoService;
     private final PedidoXProdutoRepository pedidoXProdutoRepository;
+    private final PedidoXProdutoService pedidoXProdutoService;
     private final ClienteService clienteService;
     private final ObjectMapper objectMapper;
 
@@ -48,7 +49,7 @@ public class PedidoService {
         return pedidoOutputDTO;
     }
 
-    public List<PedidoDTO> listar() throws BancoDeDadosException {
+    public List<PedidoDTO> listar() throws Exception {
         List<PedidoDTO>listaOut = new ArrayList<>();
 
         for(Pedido p: pedidoRepository.listar()){
@@ -63,6 +64,16 @@ public class PedidoService {
 
         }
         return listaOut;
+    }
+    public PedidoDTO buscarByIdPedido(Integer idPedido) throws Exception {
+
+        PedidoDTO pedidoDTO = objectMapper.convertValue(pedidoRepository.getPedidoPorId(idPedido),PedidoDTO.class);
+
+        if(pedidoDTO == null ){
+            throw new RegraDeNegocioException("Pedido não encontrado");
+        }
+        pedidoDTO.setProdutos(pedidoXProdutoService.listarProdutosDoPedido(idPedido));
+        return pedidoDTO;
     }
 
     public PedidoDTO adicionarProdutoaoPedido(Integer idPedido, Integer idProduto) throws Exception{
@@ -117,23 +128,32 @@ public class PedidoService {
             throw new RegraDeNegocioException("Produto não encontrado");
         }
 
-        if(flag.equalsIgnoreCase("i")){
+        List<ProdutoDTO> produtosDTO = pedidoXProdutoService.listarProdutosDoPedido(pedidoAchado.getIdPedido());
 
-            Double valor = pedidoAchado.getValor() + produtoDTO.getValor();
+        for (ProdutoDTO produto:produtosDTO) {
 
-            if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
+            if(produto.getIdProduto().equals(idProduto)){
 
-                return true;
-            }
+                if(flag.equalsIgnoreCase("i")){
 
-        }
-        if (flag.equalsIgnoreCase("d")) {
+                    Double valor = pedidoAchado.getValor() + produtoDTO.getValor();
 
-            Double valor = pedidoAchado.getValor() - produtoDTO.getValor();
+                    if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
 
-            if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
+                        return true;
+                    }
 
-                return true;
+                }
+                if (flag.equalsIgnoreCase("d")) {
+
+                    Double valor = pedidoAchado.getValor() - produtoDTO.getValor();
+
+                    if (pedidoRepository.editarValorDoPedido(valor, pedidoAchado.getIdPedido())) {
+
+                        return true;
+                    }
+                }
+                break;
             }
         }
 
@@ -143,6 +163,19 @@ public class PedidoService {
     public void deletePedido(Integer idPedido) throws Exception{
         pedidoXProdutoRepository.removerTodosProdutosDoPedido(idPedido);
         pedidoRepository.remover(idPedido);
+    }
+
+    public PedidoDTO atualizarStatusPedido(Integer idPedido) throws Exception{
+
+        PedidoDTO pedidoDTO = buscarByIdPedido(idPedido);
+
+        if(pedidoDTO.getStatusPedido().equalsIgnoreCase("s")){
+            throw new RegraDeNegocioException("Pedido finalizado");
+        }
+        pedidoRepository.editarStatusPedido("S",idPedido);
+        pedidoDTO.setStatusPedido("S");
+
+        return pedidoDTO;
     }
 
 }

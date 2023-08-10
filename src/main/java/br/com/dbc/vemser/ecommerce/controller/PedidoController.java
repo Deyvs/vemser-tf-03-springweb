@@ -4,7 +4,6 @@ import br.com.dbc.vemser.ecommerce.doc.PedidoControllerDoc;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoCreateDTO;
 import br.com.dbc.vemser.ecommerce.dto.pedido.PedidoDTO;
 import br.com.dbc.vemser.ecommerce.service.PedidoService;
-import br.com.dbc.vemser.ecommerce.service.PedidoXProdutoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,21 +21,26 @@ import java.util.List;
 public class PedidoController implements PedidoControllerDoc {
 
     private final PedidoService pedidoService;
-    private final PedidoXProdutoService pedidoXProdutoService;
 
     @GetMapping
     public ResponseEntity<List<PedidoDTO>> listar() throws Exception {
         return new ResponseEntity<>(pedidoService.listar(),HttpStatus.OK);
     }
-//    @PutMapping("/{idPedido}/{idProduto}")
-//    public ResponseEntity<PedidoOutputDTO> atualizarValor(@PathVariable ("idPedido")  @Positive Integer idPedido,
-//                                                         @PathVariable @Positive Integer idProduto) throws Exception{
-//        return new ResponseEntity<>(pedidoService.atualizarValorPedido(idPedido,idProduto),HttpStatus.OK);
-//    }
-    @PostMapping("/{idPessoa}")
-    public ResponseEntity<PedidoDTO> criarPedido(@PathVariable ("idPessoa") @Positive Integer idPessoa,
+
+    @Override
+    public ResponseEntity<PedidoDTO> buscarByIdPedido(Integer idPedido) throws Exception {
+        return new ResponseEntity<>(pedidoService.buscarByIdPedido(idPedido),HttpStatus.OK);
+    }
+
+    @PostMapping("/{idCliente}")
+    public ResponseEntity<PedidoDTO> criarPedido(@PathVariable ("idCliente") @Positive Integer idCliente,
                                                  @RequestBody @Valid PedidoCreateDTO idPedido) throws Exception {
-        return new ResponseEntity<>(pedidoService.criarPedido(idPessoa,idPedido), HttpStatus.OK);
+        return new ResponseEntity<>(pedidoService.criarPedido(idCliente,idPedido), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<PedidoDTO> atualizarStatusDoPedido(Integer idPedido) throws Exception {
+        return new ResponseEntity<>(pedidoService.atualizarStatusPedido(idPedido),HttpStatus.OK);
     }
 
     @DeleteMapping("/{idPedido}")

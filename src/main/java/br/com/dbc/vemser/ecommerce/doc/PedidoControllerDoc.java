@@ -25,6 +25,18 @@ public interface PedidoControllerDoc {
     @GetMapping
     ResponseEntity<List<PedidoDTO>> listar() throws Exception;
 
+    @Operation(summary = "Buscar pedido por ID", description = "Buscar pedidos por ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna um pedido"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/{idPedido}")
+    ResponseEntity<PedidoDTO> buscarByIdPedido(@PathVariable("idPedido")@Positive Integer idPedido) throws Exception;
+
+
     @Operation(summary = "Criar pedido por ID", description = "Cria pedido selecionando a pessoa destinada pelo ID no banco")
     @ApiResponses(
             value = {
@@ -33,10 +45,22 @@ public interface PedidoControllerDoc {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping("/{idPessoa}")
-    ResponseEntity<PedidoDTO> criarPedido(@PathVariable("idPessoa")
-                                          @Positive Integer idPessoa,
+    @PostMapping("/{idCliente}")
+    ResponseEntity<PedidoDTO> criarPedido(@PathVariable("idCliente")
+                                          @Positive Integer idCliente,
                                           @RequestBody @Valid PedidoCreateDTO idPedido) throws Exception;
+
+    @Operation(summary = "Criar pedido por ID", description = "Cria pedido selecionando a pessoa destinada pelo ID no banco")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retornar pedido criado com ID"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PutMapping("/{idPedido}")
+    ResponseEntity<PedidoDTO> atualizarStatusDoPedido(@PathVariable("idPedido")
+                                          @Positive Integer idPedido) throws Exception;
 
     @Operation(summary = "Criar carrinho informando ID de pedido e ID do protudo selecionado", description = "Adiciona um produto ao pedido informando o ID do pedido e ID do produto que deseja adicionar ao carrinho")
     @ApiResponses(

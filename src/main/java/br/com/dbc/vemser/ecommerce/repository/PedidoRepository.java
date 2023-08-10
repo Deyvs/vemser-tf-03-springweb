@@ -181,6 +181,34 @@ public class PedidoRepository {
             }
         }
     }
+    public boolean editarStatusPedido(String status, Integer idPedido) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "UPDATE PEDIDO SET PAGO=?  WHERE ID_PEDIDO=?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, status);
+            stmt.setInt(2, idPedido);
+
+            Integer res = stmt.executeUpdate();
+
+            return res>0;
+
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 //    public List<Pedido> listarPedidosDoCliente(Integer idCliente) throws BancoDeDadosException {
 //        List<Pedido> pedidos = new ArrayList<>();
 //        Connection con = null;

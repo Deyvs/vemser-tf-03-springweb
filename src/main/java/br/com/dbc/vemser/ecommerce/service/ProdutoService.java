@@ -22,14 +22,14 @@ public class ProdutoService {
     private final ConverterProdutoParaDTOutil converterProdutoParaDTOutil;
 
 
-    public List<ProdutoDTO> listar() throws BancoDeDadosException {
+    public List<ProdutoDTO> listar() throws Exception {
 
         return produtoRepository.listar().stream()
                 .map(converterProdutoParaDTOutil::converteProdutoParaDTO)
                 .collect(Collectors.toList());
     }
 
-    public ProdutoDTO buscarProduto(Integer idProduto) throws BancoDeDadosException, RegraDeNegocioException {
+    public ProdutoDTO buscarProduto(Integer idProduto) throws Exception {
 
         Produto produto = produtoRepository.buscarProduto(idProduto);
 
@@ -42,7 +42,7 @@ public class ProdutoService {
     }
 
 
-    public ProdutoDTO salvar(ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException {
+    public ProdutoDTO salvar(ProdutoCreateDTO produtoCreateDTO) throws Exception {
 
         Produto produto = converterProdutoParaDTOutil.converteDTOparaProduto(produtoCreateDTO);
 
@@ -51,7 +51,7 @@ public class ProdutoService {
         return converterProdutoParaDTOutil.converteProdutoParaDTO(produtoBuscado);
     }
 
-    public ProdutoDTO atualizar(Integer idProduto, ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException {
+    public ProdutoDTO atualizar(Integer idProduto, ProdutoCreateDTO produtoCreateDTO) throws Exception {
 
         Produto buscarProduto = produtoRepository.buscarProduto(idProduto);
         if (buscarProduto == null) {
@@ -64,51 +64,12 @@ public class ProdutoService {
         return converterProdutoParaDTOutil.converteProdutoParaDTO(produtoAtualizado);
     }
 
-    public void deletar(Integer idProduto) throws RegraDeNegocioException, BancoDeDadosException {
+    public void deletar(Integer idProduto) throws Exception {
 
         Produto buscarProduto = produtoRepository.buscarProduto(idProduto);
-        if (buscarProduto == null) throw new RegraDeNegocioException("Produto não cadastrado!");
+//        if (buscarProduto == null) throw new RegraDeNegocioException("Produto não cadastrado!");
 
         produtoRepository.deletar(idProduto);
 
     }
 }
-
-//    private ProdutoRepository produtoRepository;
-//
-//    public ProdutoService() {
-//        produtoRepository = new ProdutoRepository();
-//    }
-//
-//    public void listar() {
-//        try {
-//            for (Produto produto : produtoRepository.listar()) {
-//                produto.imprimir();
-//            }
-//
-//
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public Integer getMaximoID() {
-//        try {
-//            return produtoRepository.getMaximoId();
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//            return 0;
-//        }
-//    }
-//
-//    public Produto buscarProduto(int idProduto) {
-//        try {
-//            Produto produto = produtoRepository.buscarProduto(idProduto);
-//            if (produto == null) {
-//                System.out.println("Produto não encontrado");
-//            } return produto;
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }

@@ -25,8 +25,7 @@ public class ProdutoController implements ProdutoControllerDoc {
     private final ProdutoService produtoService;
 
     @GetMapping
-    public ResponseEntity<List<ProdutoDTO>> listarProdutos() throws BancoDeDadosException {
-//        log.info("listando produtos");
+    public ResponseEntity<List<ProdutoDTO>> listarProdutos() throws Exception {
         return new ResponseEntity<>(produtoService.listar(), HttpStatus.OK);
     }
 
@@ -34,7 +33,7 @@ public class ProdutoController implements ProdutoControllerDoc {
     @GetMapping("/{idProduto}")
     public ResponseEntity<ProdutoDTO> buscarProduto(
             @Positive(message = "O número precisa ser positivo.")
-            @PathVariable Integer idProduto) throws BancoDeDadosException, RegraDeNegocioException {
+            @PathVariable Integer idProduto) throws Exception {
 //        log.info("buscar produtos");
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto);
         return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
@@ -43,7 +42,7 @@ public class ProdutoController implements ProdutoControllerDoc {
     @PostMapping
     public ResponseEntity<ProdutoDTO> salvarProduto(
             @Valid @RequestBody
-            ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException {
+            ProdutoCreateDTO produtoCreateDTO) throws Exception {
 //        log.info("buscar produtos");
 
         ProdutoDTO produtoDTO = produtoService.salvar(produtoCreateDTO);
@@ -56,7 +55,7 @@ public class ProdutoController implements ProdutoControllerDoc {
             @Positive(message = "O número precisa ser positivo.")
             @PathVariable Integer idProduto,
             @Valid @RequestBody
-            ProdutoCreateDTO produtoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException {
+            ProdutoCreateDTO produtoCreateDTO) throws Exception {
 //        log.info("buscar produtos");
 
         ProdutoDTO produtoDTO = produtoService.atualizar(idProduto, produtoCreateDTO);
@@ -65,10 +64,9 @@ public class ProdutoController implements ProdutoControllerDoc {
     }
 
     @DeleteMapping("/{idProduto}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idProduto) throws RegraDeNegocioException, BancoDeDadosException {
+    public ResponseEntity<Void> delete(@PathVariable Integer idProduto) throws Exception {
         produtoService.deletar(idProduto);
         return ResponseEntity.ok().build();
     }
-
 
 }

@@ -13,22 +13,22 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ProdutoCreateDTO {
 
-    @NotNull
+
     @NotBlank
     @Schema(description = "Modelo do produto", required = true, example = "MANGALONGA")
     private String modelo;
 
-    @NotNull
+
     @NotBlank
     @Schema(description = "Tamanho do produto", required = true, example = "P")
     private String tamanho;
 
-    @NotNull
+
     @NotBlank
     @Schema(description = "Cor do produto", required = true, example = "Branco")
     private String cor;
 
-    @NotNull
+
     @NotBlank
     @Schema(description = "Setor do produto", required = true, example = "FEMININO")
     private String setor;
