@@ -21,6 +21,7 @@ public interface ProdutoControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna lista de todos produtos"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "Página não encontrada"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -32,6 +33,7 @@ public interface ProdutoControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna produto listado pelo ID"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -43,7 +45,9 @@ public interface ProdutoControllerDoc {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna produto criado"),
+                    @ApiResponse(responseCode = "201", description = "Retorna o produto criado"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -55,6 +59,7 @@ public interface ProdutoControllerDoc {
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna produto atualizado"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
@@ -67,7 +72,9 @@ public interface ProdutoControllerDoc {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna Ok"),
+                    @ApiResponse(responseCode = "204", description = "Retorna produto deletado"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "404", description = "ID não encontrado"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
