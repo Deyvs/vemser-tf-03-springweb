@@ -32,7 +32,7 @@ public class ProdutoController implements ProdutoControllerDoc {
     public ResponseEntity<ProdutoDTO> buscarProduto(
             @Positive(message = "O número precisa ser positivo.")
             @PathVariable Integer idProduto) throws Exception {
-//        log.info("buscar produtos");
+
         ProdutoDTO produtoDTO = produtoService.buscarProduto(idProduto);
         return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
     }
@@ -41,7 +41,7 @@ public class ProdutoController implements ProdutoControllerDoc {
     public ResponseEntity<ProdutoDTO> salvarProduto(
             @Valid @RequestBody
             ProdutoCreateDTO produtoCreateDTO) throws Exception {
-//        log.info("buscar produtos");
+
 
         ProdutoDTO produtoDTO = produtoService.salvar(produtoCreateDTO);
 
@@ -54,7 +54,7 @@ public class ProdutoController implements ProdutoControllerDoc {
             @PathVariable Integer idProduto,
             @Valid @RequestBody
             ProdutoCreateDTO produtoCreateDTO) throws Exception {
-//        log.info("buscar produtos");
+
 
         ProdutoDTO produtoDTO = produtoService.atualizar(idProduto, produtoCreateDTO);
 
